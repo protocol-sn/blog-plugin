@@ -1,0 +1,22 @@
+coop:
+  stlma:
+    tech:
+      protocolsn:
+        registration:
+          on-startup: false
+
+micronaut:
+  security:
+    enabled: true
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: testSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecrettestSecret
+
+endpoints:
+  routes:
+    enabled: true
+    sensitive: false
