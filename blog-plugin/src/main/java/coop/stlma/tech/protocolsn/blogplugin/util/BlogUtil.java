@@ -4,20 +4,19 @@ import coop.stlma.tech.protocolsn.blogplugin.data.entity.BlogEntryEntity;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
 
 /**
- * Blog-related utilities
+ * Common utilities for the blog plugin
  *
  * @author John Meyerin
  */
-public class Util {
-    private Util() {}
+public class BlogUtil {
+    private BlogUtil() { }
 
     /**
-     * Converts a blog entry entity to a blog entry model
-     *
-     * @param blogEntryEntity entity to convert
-     * @return blog entry model
+     * Translate an entity to the model
+     * @param blogEntryEntity   the entity
+     * @return                  the model
      */
-    public static BlogEntry toModel(BlogEntryEntity blogEntryEntity) {
+    public static BlogEntry mapToModel(BlogEntryEntity blogEntryEntity) {
         return BlogEntry.builder()
                 .id(blogEntryEntity.getId())
                 .author(blogEntryEntity.getAuthor())

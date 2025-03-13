@@ -1,1 +1,2 @@
 include("blog-plugin", "blog-plugin-ui", "blog-plugin-api")
+rootProject.name = "blog-plugin"

@@ -1,4 +1,4 @@
-package coop.stlma.tech.protocolsn;
+package coop.stlma.tech.protocolsn.blogplugin.util;
 
 import coop.stlma.tech.protocolsn.pluginlib.security.CommonRoles;
 import io.micronaut.core.annotation.NonNull;

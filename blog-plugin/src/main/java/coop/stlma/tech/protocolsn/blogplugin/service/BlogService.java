@@ -5,7 +5,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+/**
+ * Service for interacting with blogs
+ *
+ * @author John Meyerin
+ */
 public interface BlogService {
-
-    Mono<BlogEntry> getBlogEntry(UUID id);
+    Mono<BlogEntry> getBlog(UUID blogId);
 }

@@ -15,6 +15,11 @@ import java.util.UUID;
 
 public interface BlogOperations {
 
+    /**
+     * Endpoint for accessing a specific blog
+     * @param blogId    Id of the blog
+     * @return          The requested blog
+     */
     String GET_BLOG_ENDPOINT = "/blog/{blogId}";
     Mono<HttpResponse<BlogEntry>> getBlog(@PathVariable("blogId") UUID blogId);
 }

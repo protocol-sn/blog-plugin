@@ -18,7 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * Database entity representing a blog entry.
+ * Database entity representing a registered plugin.
  *
  * @author John Meyerin
  */
@@ -38,22 +38,22 @@ public class BlogEntryEntity {
     private UUID id;
 
     /**
-     * The user who wrote this blog.
+     * ID of the user who authored this blog
      */
     @Column(name = "author")
     private UUID author;
 
     /**
-     * Full text of the blog
-     */
-    @Column(name = "blog_text")
-    private String blogText;
-
-    /**
-     * Title of the blog
+     * Title of this blog entry
      */
     @Column(name = "blog_title")
     private String blogTitle;
+
+    /**
+     * Text of this blog entry
+     */
+    @Column(name = "blog_text")
+    private String blogText;
 
     /**
      * Comma-separated list of tags
@@ -62,16 +62,16 @@ public class BlogEntryEntity {
     private String tags;
 
     /**
-     * Created timestamp
+     * When this blog entry was created
      */
     @Column(name = "created_at")
     @CreationTimestamp
     private Instant createdAt;
 
     /**
-     * Last-updated timestamp
+     * When this blog entry was last updated
      */
     @Column(name = "updated_at")
     @UpdateTimestamp
-    private String updatedAt;
+    private Instant updatedAt;
 }

@@ -12,5 +12,5 @@ import java.util.UUID;
  * @author John Meyerin
  */
 @Repository
-public interface BlogEntryRepository  extends ReactorCrudRepository<BlogEntryEntity, UUID> {
+public interface BlogEntryRepository extends ReactorCrudRepository<BlogEntryEntity, UUID> {
 }

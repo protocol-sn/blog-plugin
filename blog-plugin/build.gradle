@@ -1,6 +1,6 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.3.8"
+    id("io.micronaut.application") version "4.4.4"
     id("io.micronaut.aot") version "4.4.4"
 }
 
@@ -23,12 +23,9 @@ dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
     implementation("io.micronaut.validation:micronaut-validation")
 
-    //client
-    implementation("io.micronaut.views:micronaut-views-fieldset")
-
     //protocol-sn
     implementation("coop.stlma.tech.protocolsn:plugin-lib:0.3.0")
-    implementation project(":blog-plugin-api")
+    implementation project(':blog-plugin-api')
 
     //serde
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
@@ -63,11 +60,9 @@ dependencies {
     runtimeOnly("org.flywaydb:flyway-database-postgresql")
 
     //testing
-    testImplementation("io.micronaut:micronaut-http-client")
     implementation("coop.stlma.tech.protocolsn:plugin-lib-api:0.1.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testAnnotationProcessor("io.micronaut:micronaut-inject-java")
     testImplementation("org.mockito:mockito-core")
@@ -75,7 +70,6 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:testcontainers")
-    testRuntimeOnly("com.h2database:h2")
 }
 
 
@@ -91,7 +85,6 @@ java {
 graalvmNative.toolchainDetection = false
 
 micronaut {
-    version = getProperty("micronautVersion")
     runtime("netty")
     testRuntime("junit5")
     processing {
