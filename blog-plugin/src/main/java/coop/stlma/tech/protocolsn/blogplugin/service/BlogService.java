@@ -12,4 +12,6 @@ import java.util.UUID;
  */
 public interface BlogService {
     Mono<BlogEntry> getBlog(UUID blogId);
+
+    Mono<BlogEntry> saveBlog(BlogEntry blogEntry);
 }

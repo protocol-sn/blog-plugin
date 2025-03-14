@@ -9,6 +9,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
@@ -25,6 +26,19 @@ class BlogServiceImplTest {
 
     @Inject
     BlogServiceImpl blogService;
+
+    ArgumentCaptor<BlogEntryEntity> blogEntryCaptor = ArgumentCaptor.forClass(BlogEntryEntity.class);
+
+    @Test
+    void testSaveBlog_happyPath() {
+        BlogEntry blogEntry = TestUtil.makeModel("my blog");
+        Mockito.when(blogEntryRepositoryMock.save(blogEntryCaptor.capture()))
+                .thenReturn(Mono.just(TestUtil.makeEntity("my blog")));
+
+        blogService.saveBlog(blogEntry).block();
+
+        Assertions.assertTrue(TestUtil.modelEntityCompare(blogEntry, blogEntryCaptor.getValue()));
+    }
 
     @Test
     void testGetBlog_happyPath() {

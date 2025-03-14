@@ -27,4 +27,20 @@ public class BlogUtil {
                 .updatedAt(blogEntryEntity.getUpdatedAt())
                 .build();
     }
+
+    /**
+     * Translate a model to an entity
+     * @param blogEntry the model
+     * @return          the entity
+     */
+    public static BlogEntryEntity mapToEntity(BlogEntry blogEntry) {
+        return new BlogEntryEntity(
+                blogEntry.getId(),
+                blogEntry.getAuthor(),
+                blogEntry.getBlogTitle(),
+                blogEntry.getBlogText(),
+                blogEntry.getTags(),
+                blogEntry.getCreatedAt(),
+                blogEntry.getUpdatedAt());
+    }
 }
