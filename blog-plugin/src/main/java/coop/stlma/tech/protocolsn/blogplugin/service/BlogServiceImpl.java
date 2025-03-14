@@ -27,4 +27,10 @@ public class BlogServiceImpl implements BlogService {
         return blogEntryRepository.findById(blogId)
                 .map(BlogUtil::mapToModel);
     }
+
+    @Override
+    public Mono<BlogEntry> saveBlog(BlogEntry blogEntry) {
+        return blogEntryRepository.save(BlogUtil.mapToEntity(blogEntry))
+                .map(BlogUtil::mapToModel);
+    }
 }
