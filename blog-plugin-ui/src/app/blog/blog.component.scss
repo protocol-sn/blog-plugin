@@ -1,0 +1,31 @@
+.grid-container {
+  //margin: 20px;
+  //padding: 20px;
+  background-color: var(--bg-color-dark);
+  justify-content: flex-start;
+  height: 100%;
+  //width: 90%;
+}
+
+.app-class .mat-list-item {
+  //height: 100px;
+  margin: 20px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.blog-para {
+  text-indent: 25px;
+}
+
+code {
+  font-family: Consolas, "courier new", serif;
+  color: lawngreen;
+  background-color: #6b6b6b;
+  padding: 1px;
+  font-size: 95%;
+}
