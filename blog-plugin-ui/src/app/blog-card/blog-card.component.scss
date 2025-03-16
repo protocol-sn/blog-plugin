@@ -1,0 +1,21 @@
+.dashboard-card {
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  background-color: var(--bg-color-medium);
+  margin-right: 25px;
+}
+
+.dashboard-card-content {
+  flex-grow: 1;
+  overflow: auto;
+}
+
+.tag-footer {
+  margin: 5px;
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: 5px;
+}
