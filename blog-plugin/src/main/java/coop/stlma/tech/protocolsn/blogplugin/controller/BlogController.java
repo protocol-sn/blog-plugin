@@ -10,13 +10,11 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
-import io.micronaut.http.hateoas.AbstractResource;
-import io.micronaut.http.hateoas.GenericResource;
 import io.micronaut.http.hateoas.Link;
-import io.micronaut.http.hateoas.Resource;
 import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -57,6 +55,7 @@ public class BlogController implements BlogOperations {
      */
     @Post(BlogOperations.SUBMIT_BLOG_ENDPOINT)
     @Secured(SecurityRule.IS_AUTHENTICATED)
+    @SecurityRequirement(name = "authenticatedUser")
     @Override
     public Mono<HttpResponse<BlogEntryResource>> submitBlog(@Body BlogEntry blogEntry) {
         return blogService.saveBlog(blogEntry)
