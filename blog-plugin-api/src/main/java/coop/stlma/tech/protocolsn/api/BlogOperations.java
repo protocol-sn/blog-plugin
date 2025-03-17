@@ -14,6 +14,7 @@ import java.util.UUID;
  * @author John Meyerin
  */
 public interface BlogOperations {
+    String GET_BLOG_ENDPOINT = "/blog/{blogId}";
 
     /**
      * Endpoint for accessing a specific blog
@@ -21,7 +22,6 @@ public interface BlogOperations {
      * @param blogId    Id of the blog
      * @return          The requested blog
      */
-    String GET_BLOG_ENDPOINT = "/blog/{blogId}";
     Mono<HttpResponse<BlogEntry>> getBlog(@PathVariable("blogId") UUID blogId);
 
     String SUBMIT_BLOG_ENDPOINT = "/blog";
