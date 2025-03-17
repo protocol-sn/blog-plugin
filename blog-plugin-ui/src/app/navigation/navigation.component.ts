@@ -9,7 +9,8 @@ import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {BlogService} from '../blog.service';
 import {BlogMetadata} from '../blog-metadata';
-import {BlogComponent} from '../blog/blog.component';
+import {WriteBlogComponent} from '../write-blog/write-blog.component';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-navigation',
@@ -21,7 +22,6 @@ import {BlogComponent} from '../blog/blog.component';
     MatIconModule,
     NgIf,
     NgForOf,
-    BlogComponent
   ],
   templateUrl: './navigation.component.html',
   standalone: true,
@@ -30,6 +30,7 @@ import {BlogComponent} from '../blog/blog.component';
 export class NavigationComponent implements OnInit {
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly blogService = inject(BlogService);
+  readonly dialog = inject(MatDialog);
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -44,5 +45,13 @@ export class NavigationComponent implements OnInit {
       this.blogMetas = blogs;
     });
 
+  }
+
+  showBlogForm() {
+    this.dialog.open(WriteBlogComponent, {
+      id: 'writeBlogDialog',
+      height: '80%',
+      width: '60%',
+    });
   }
 }

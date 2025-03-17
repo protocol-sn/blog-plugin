@@ -4,8 +4,11 @@
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="(isHandset$ | async) === false">
     <mat-toolbar>
-<!--      <img style="padding-top: 15px" width="100px" src="assets/citAbbyLogo.png" alt="Citizen Abacus logo"/>-->
     </mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item (click)="showBlogForm()">Write new blog</a>
+    </mat-nav-list>
+    <hr/>
     Blogs
     <mat-nav-list>
       <a mat-list-item *ngFor="let blogMeta of blogMetas" [href]="'/blog/'+blogMeta.id">{{blogMeta.blogTitle}}</a>
@@ -23,6 +26,6 @@
       </button>
       <span>Blogging</span>
     </mat-toolbar>
-    <app-blog></app-blog>
+    <div style="height: 100%;"><ng-content></ng-content></div>
   </mat-sidenav-content>
 </mat-sidenav-container>
