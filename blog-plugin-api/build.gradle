@@ -26,11 +26,14 @@ dependencies {
     //security
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.security:micronaut-security-oauth2")
-//    implementation("io.micronaut.security:micronaut-security-jwt")
 
     //lombok
     annotationProcessor("org.projectlombok:lombok")
     compileOnly("org.projectlombok:lombok")
+
+    //swagger
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    implementation("io.micronaut.openapi:micronaut-openapi-annotations")
 }
 
 // use JUnit 5 platform

@@ -22,12 +22,22 @@ public class BlogServiceImpl implements BlogService {
         this.blogEntryRepository = blogEntryRepository;
     }
 
+    /**
+     * Get a blog by ID
+     * @param blogId    Id of the blog
+     * @return          The requested blog
+     */
     @Override
     public Mono<BlogEntry> getBlog(UUID blogId) {
         return blogEntryRepository.findById(blogId)
                 .map(BlogUtil::mapToModel);
     }
 
+    /**
+     * Submit a blog entry
+     * @param blogEntry The blog entry
+     * @return          The saved blog
+     */
     @Override
     public Mono<BlogEntry> saveBlog(BlogEntry blogEntry) {
         return blogEntryRepository.save(BlogUtil.mapToEntity(blogEntry))

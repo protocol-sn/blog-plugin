@@ -5,8 +5,7 @@ import {RouterOutlet} from '@angular/router';
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `<router-outlet></router-outlet>`,
-  standalone: true,
-  styleUrl: './app.component.css'
+  standalone: true
 })
 export class AppComponent {
   title = 'blog-plugin-ui';

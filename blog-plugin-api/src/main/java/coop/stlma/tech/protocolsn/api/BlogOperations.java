@@ -4,7 +4,6 @@ import coop.stlma.tech.protocolsn.model.BlogEntry;
 import coop.stlma.tech.protocolsn.model.BlogEntryResource;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.PathVariable;
-import io.micronaut.http.hateoas.Link;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -15,6 +14,7 @@ import java.util.UUID;
  * @author John Meyerin
  */
 public interface BlogOperations {
+    String GET_BLOG_ENDPOINT = "/blog/{blogId}";
 
     /**
      * Endpoint for accessing a specific blog
@@ -22,8 +22,6 @@ public interface BlogOperations {
      * @param blogId    Id of the blog
      * @return          The requested blog
      */
-    String GET_BLOG_ENDPOINT = "/blog/{blogId}";
-
     Mono<HttpResponse<BlogEntry>> getBlog(@PathVariable("blogId") UUID blogId);
 
     String SUBMIT_BLOG_ENDPOINT = "/blog";
