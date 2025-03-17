@@ -1,0 +1,29 @@
+<div class="form-container">
+  <form [formGroup]="blogForm" style="width: 90%; height: 100%">
+    <div class="form-field">
+      <div class="label-div">
+        <label class="form-label" for="blogTitle">Blog Title</label>
+      </div>
+      <div class="input-div">
+        <input class="form-input" type="text" id="blogTitle" formControlName="blogTitle" />
+      </div>
+    </div>
+    <div class="form-field">
+      <div class="label-div">
+        <label class="form-label" for="tags">Tags</label>
+      </div>
+      <div class="input-div">
+        <input class="form-input" type="text" id="tags" formControlName="tags" />
+      </div>
+    </div>
+    <div class="blog-text-row" style="height: 80%">
+      <div class="label-div">
+        <label class="form-label" for="blogText">Blog Text</label>
+      </div>
+      <div style="flex-grow: .95">
+        <textarea  style="width: 100%; resize: none; height: 100%" id="blogText" formControlName="blogText"></textarea>
+      </div>
+    </div>
+    <button type="submit" (click)="onSubmit()">Submit</button>
+  </form>
+</div>

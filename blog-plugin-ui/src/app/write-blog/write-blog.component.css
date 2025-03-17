@@ -1,0 +1,41 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  width: 80%;
+  height: 100%;
+  align-self: center;
+}
+
+.form-field {
+  margin: 10px;
+  width: 100%;
+  display: flex;
+}
+
+.blog-text-row {
+  width: 100%;
+  flex-direction: column;
+  flex-grow: 1;
+  display: flex;
+  margin: 10px;
+}
+
+.form-label {
+  margin-right: 3px;
+  display: block;
+  float: left;
+  width: 100%;
+}
+
+.form-input {
+  width: 100%;
+}
+
+.label-div {
+  width: 80px;
+}
+
+.input-div {
+  flex-grow: 1;
+}

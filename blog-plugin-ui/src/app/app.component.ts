@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import {NavigationComponent} from './navigation/navigation.component';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [NavigationComponent],
-  template: `<app-navigation></app-navigation>`,
+  imports: [RouterOutlet],
+  template: `<router-outlet></router-outlet>`,
   standalone: true,
   styleUrl: './app.component.css'
 })
