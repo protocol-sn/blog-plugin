@@ -11,7 +11,6 @@ import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.hateoas.Link;
-import io.micronaut.runtime.server.EmbeddedServer;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -28,11 +27,9 @@ import java.util.UUID;
 public class BlogController implements BlogOperations {
 
     private final BlogService blogService;
-    private final EmbeddedServer embeddedServer;
 
-    public BlogController(BlogService blogService, EmbeddedServer embeddedServer) {
+    public BlogController(BlogService blogService) {
         this.blogService = blogService;
-        this.embeddedServer = embeddedServer;
     }
 
     /**
