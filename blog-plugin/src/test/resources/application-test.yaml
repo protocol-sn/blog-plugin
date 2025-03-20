@@ -20,3 +20,11 @@ endpoints:
   routes:
     enabled: true
     sensitive: false
+
+datasources:
+  default:
+    driver-class-name: org.h2.Driver
+    username: ${JDBC_USER:postgres}
+    password: ${JDBC_PASSWORD:postgres}
+    dialect: H2
+    jdbc-url: 'jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE'
