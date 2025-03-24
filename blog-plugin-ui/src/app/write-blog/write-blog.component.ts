@@ -22,17 +22,15 @@ export class WriteBlogComponent {
     blogTitle: new FormControl(''),
     blogText: new FormControl(''),
     tags: new FormControl(''),
-  })
+  });
 
   onSubmit() {
-    let blog = <Blog>{
-      id: this.blogForm.value.id,
+    let blog = <Blog> {
       blogTitle: this.blogForm.value.blogTitle,
       blogText: this.blogForm.value.blogText,
       tags: this.blogForm.value.tags,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     }
+    console.log(blog);
     this.validateBlog(blog);
     this.blogService.saveBlog(blog);
     this.dialog.getDialogById('writeBlogDialog')?.close();

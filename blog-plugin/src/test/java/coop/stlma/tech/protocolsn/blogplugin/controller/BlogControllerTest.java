@@ -1,10 +1,13 @@
 package coop.stlma.tech.protocolsn.blogplugin.controller;
 
+import coop.stlma.tech.protocolsn.blogplugin.util.AuthProviderCreds;
 import coop.stlma.tech.protocolsn.blogplugin.util.TestUtil;
 import coop.stlma.tech.protocolsn.api.BlogOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
+import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import io.micronaut.context.annotation.Primary;
+import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -19,8 +22,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,6 +46,55 @@ class BlogControllerTest {
     ArgumentCaptor<BlogEntry> blogEntryCaptor = ArgumentCaptor.forClass(BlogEntry.class);
 
     @Test
+    void testMostRecentBlogByUser_happyPath() {
+        HttpRequest<BlogEntry> request = HttpRequest.GET(
+                BlogOperations.GET_USER_BLOG_MOST_RECENT_ENDPOINT.replace("{userId}", AuthProviderCreds.TEST_USER_ID.toString()));
+
+        Mockito.when(blogServiceMock.mostRecentBlogByUser(AuthProviderCreds.TEST_USER_ID))
+                .thenReturn(Mono.just(BlogEntry.builder()
+                        .id(BLOG_ID)
+                        .author(AuthProviderCreds.TEST_USER_ID)
+                        .blogTitle("Cool Blog")
+                        .blogText("Some text")
+                        .build()));
+
+        HttpResponse<BlogEntry> response = httpClient.toBlocking()
+                .exchange(request, BlogEntry.class);
+
+        Assertions.assertEquals(HttpStatus.OK, response.status());
+        BlogEntry responseBody = response.getBody(BlogEntry.class).get();
+        Assertions.assertEquals(BLOG_ID, responseBody.getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, responseBody.getAuthor());
+        Assertions.assertEquals("Cool Blog", responseBody.getBlogTitle());
+        Assertions.assertEquals("Some text", responseBody.getBlogText());
+    }
+
+    @Test
+    void testRecentBlogMetaForUser_happyPath() {
+        HttpRequest<BlogEntryMetadata> request = HttpRequest.GET(
+                BlogOperations.GET_USER_BLOGS_ENDPOINT.replace("{userId}", AuthProviderCreds.TEST_USER_ID.toString()));
+
+        Mockito.when(blogServiceMock.queryBlogMetadata(AuthProviderCreds.TEST_USER_ID))
+                .thenReturn(Flux.just(
+                        BlogEntryMetadata.builder()
+                                .blogTitle("blog1")
+                                .build(),
+                        BlogEntryMetadata.builder()
+                                .blogTitle("blog2")
+                                .build()));
+
+        HttpResponse<List<BlogEntryMetadata>> response = httpClient.toBlocking()
+                .exchange(request, Argument.listOf(BlogEntryMetadata.class));
+
+        Assertions.assertEquals(HttpStatus.OK, response.status());
+        List<BlogEntryMetadata> responseBody = response.body();
+        Assertions.assertEquals(2, responseBody.size());
+        responseBody = responseBody.stream().sorted(Comparator.comparing(BlogEntryMetadata::getBlogTitle)).toList();
+        Assertions.assertEquals("blog1", responseBody.get(0).getBlogTitle());
+        Assertions.assertEquals("blog2", responseBody.get(1).getBlogTitle());
+    }
+
+    @Test
     void testSaveBlog_noAuthFails() {
         HttpRequest<BlogEntry> request = HttpRequest.POST(BlogOperations.SUBMIT_BLOG_ENDPOINT, BlogEntry.builder().build());
 
@@ -57,6 +111,7 @@ class BlogControllerTest {
 
         BlogEntry expected = BlogEntry.builder()
                 .id(BLOG_ID)
+                .author(AuthProviderCreds.TEST_USER_ID)
                 .blogTitle("Cool Blog")
                 .blogText("Some text")
                 .build();

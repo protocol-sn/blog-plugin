@@ -1,41 +1,57 @@
-import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {inject, Injectable} from '@angular/core';
+import {BehaviorSubject, map, mergeMap, Observable} from 'rxjs';
 import {BlogMetadata} from './blog-metadata';
 import {Blog} from './blog';
+import {ApiService} from './api.service';
+import {UserService} from './user.service';
+import {environment} from '../environments/environment';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
-  blogs = [
-    <Blog>{
-      id: '1',
-      blogTitle: 'Blog 1',
-      blogText: 'This is blog 1',
-      tags: 'tag1,tag2',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    <Blog>{
-      id: '2',
-      blogTitle: 'Blog 2',
-      blogText: 'This is blog 2',
-      tags: 'tag3,tag2',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-  ];
+  private readonly apiService: ApiService = inject(ApiService);
+  private readonly userService: UserService = inject(UserService);
+  private readonly authService: AuthService = inject(AuthService);
+  public blogUpdate:BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date());
+
+  private readonly LIST_BLOGS_ENDPOINT: string = "/blog/by-user/{userId}/metadata";
+  private readonly MOST_RECENT_BLOG_ENDPOINT: string = "/blog/by-user/{userId}/most-recent";
+  private readonly BLOG_BY_ID_ENDPOINT: string = "/blog/{blogId}";
+  private readonly SAVE_BLOG_ENDPOINT: string = "/blog";
 
   constructor() { }
 
-  listBlogs(): Observable<BlogMetadata[]> {
-    return new Observable(observer =>
-      observer.next(this.blogs
-        .map(value => this.toMetaData(value))));
+  listBlogs(userId: string): Observable<BlogMetadata[]> {
+    return this.apiService.doSecureGET<BlogMetadata[]>(environment.SERVICE_HOME + this.LIST_BLOGS_ENDPOINT.replace("{userId}", userId))
+      .pipe(
+        map(
+          value => {
+            if (value.ok && value.body) {
+              return value.body;
+            }
+            return <BlogMetadata[]>[];
+          }));
   }
 
   getDefaultBlog():Observable<Blog> {
-    return new Observable(observer => observer.next(this.blogs[0]));
+    return this.authService.subObs
+      .pipe(
+        mergeMap(sub => {
+          return this.apiService.doSecureGET<Blog>(environment.SERVICE_HOME + this.MOST_RECENT_BLOG_ENDPOINT.replace("{userId}", sub))
+            .pipe(
+              map(
+                value => {
+                  if (value.ok && value.body) {
+                    return value.body;
+                  }
+                  return <Blog>{};
+                }
+              )
+            )
+        })
+    )
   }
 
   private toMetaData(Blog:Blog):BlogMetadata {
@@ -49,13 +65,23 @@ export class BlogService {
   }
 
   getBlogById(id:string):Observable<Blog> {
-    return new Observable(observer =>
-      observer.next(<Blog>this.blogs
-        .find(value => value.id === id)));
+    return this.apiService.doSecureGET<Blog>(environment.SERVICE_HOME + this.BLOG_BY_ID_ENDPOINT.replace("{blogId}", id))
+      .pipe(
+        map(
+          value => {
+            if (value.ok && value.body) {
+              return value.body;
+            }
+            return <Blog>{};
+          }
+        )
+    )
   }
 
   saveBlog(blog: Blog) {
-    console.log(blog);
-    this.blogs.push(blog);
+    console.log("about to save");
+    this.blogUpdate.next(new Date())
+    this.apiService.doSecurePOST<Blog>(environment.SERVICE_HOME + this.SAVE_BLOG_ENDPOINT, "application/json", blog)
+      .subscribe();
   }
 }
