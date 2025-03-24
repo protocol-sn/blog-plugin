@@ -2,7 +2,9 @@ package coop.stlma.tech.protocolsn.blogplugin.controller;
 
 import coop.stlma.tech.protocolsn.api.BlogOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
+import coop.stlma.tech.protocolsn.blogplugin.util.BlogUtil;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
+import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import coop.stlma.tech.protocolsn.model.BlogEntryResource;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
@@ -13,9 +15,11 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.hateoas.Link;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.security.utils.SecurityService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -27,9 +31,12 @@ import java.util.UUID;
 public class BlogController implements BlogOperations {
 
     private final BlogService blogService;
+    private final SecurityService securityService;
 
-    public BlogController(BlogService blogService) {
+    public BlogController(BlogService blogService,
+                          SecurityService securityService) {
         this.blogService = blogService;
+        this.securityService = securityService;
     }
 
     /**
@@ -55,6 +62,8 @@ public class BlogController implements BlogOperations {
     @SecurityRequirement(name = "authenticatedUser")
     @Override
     public Mono<HttpResponse<BlogEntryResource>> submitBlog(@Body BlogEntry blogEntry) {
+        UUID userId = BlogUtil.parseUserId(securityService);
+        blogEntry.setAuthor(userId);
         return blogService.saveBlog(blogEntry)
                 .map(blogEntry1 -> {
                     BlogEntryResource resource = new BlogEntryResource();
@@ -62,5 +71,22 @@ public class BlogController implements BlogOperations {
                     return resource;
                 })
                 .map(HttpResponse::created);
+    }
+
+    @Get(BlogOperations.GET_USER_BLOGS_ENDPOINT)
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Override
+    public Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId) {
+        return blogService.queryBlogMetadata(userId)
+                .collectList()
+                .map(HttpResponse::ok);
+    }
+
+    @Get(BlogOperations.GET_USER_BLOG_MOST_RECENT_ENDPOINT)
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Override
+    public Mono<HttpResponse<BlogEntry>> mostRecentBlogByUser(@PathVariable("userId") UUID userId) {
+        return blogService.mostRecentBlogByUser(userId)
+                .map(HttpResponse::ok);
     }
 }

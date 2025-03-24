@@ -3,7 +3,9 @@ package coop.stlma.tech.protocolsn.blogplugin.service;
 import coop.stlma.tech.protocolsn.blogplugin.data.BlogEntryRepository;
 import coop.stlma.tech.protocolsn.blogplugin.util.BlogUtil;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
+import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import jakarta.inject.Singleton;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -41,6 +43,18 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Mono<BlogEntry> saveBlog(BlogEntry blogEntry) {
         return blogEntryRepository.save(BlogUtil.mapToEntity(blogEntry))
+                .map(BlogUtil::mapToModel);
+    }
+
+    @Override
+    public Flux<BlogEntryMetadata> queryBlogMetadata(UUID userId) {
+        return blogEntryRepository.findByAuthorOrderByCreatedAtDesc(userId)
+                .map(BlogUtil::mapToMetaModel);
+    }
+
+    @Override
+    public Mono<BlogEntry> mostRecentBlogByUser(UUID userId) {
+        return blogEntryRepository.findFirstByAuthorOrderByCreatedAtDesc(userId)
                 .map(BlogUtil::mapToModel);
     }
 }

@@ -1,57 +1,30 @@
 package coop.stlma.tech.protocolsn.model;
 
 import io.micronaut.serde.annotation.Serdeable;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
-import java.util.UUID;
+import lombok.experimental.SuperBuilder;
 
 /**
  * A blog entry
  *
  * @author John Meyerin
  */
-@Builder
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Serdeable
-public class BlogEntry {
-    /**
-     * Unique identifier for the blog
-     */
-    private UUID id;
-
-    /**
-     * Unique identifier referencing the author
-     */
-    private UUID author;
-
-    /**
-     * Title of the blog
-     */
-    private String blogTitle;
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+public class BlogEntry extends BlogEntryMetadata {
 
     /**
      * Text of the blog
      */
     private String blogText;
-
-    /**
-     * Comma-separated list of tags
-     */
-    private String tags;
-
-    /**
-     * Timestamp when the blog was created
-     */
-    private Instant createdAt;
-
-    /**
-     * Timestamp when the blog was last updated
-     */
-    private Instant updatedAt;
 }
