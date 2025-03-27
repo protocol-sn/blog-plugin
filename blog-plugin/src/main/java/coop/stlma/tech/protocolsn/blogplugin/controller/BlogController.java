@@ -12,6 +12,7 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.PathVariable;
 import io.micronaut.http.annotation.Post;
+import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.http.hateoas.Link;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
@@ -73,6 +74,11 @@ public class BlogController implements BlogOperations {
                 .map(HttpResponse::created);
     }
 
+    /**
+     * Get the metadata for this user's most recent blogs
+     * @param userId    Id of the user
+     * @return          The metadata
+     */
     @Get(BlogOperations.GET_USER_BLOGS_ENDPOINT)
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Override
@@ -82,11 +88,45 @@ public class BlogController implements BlogOperations {
                 .map(HttpResponse::ok);
     }
 
+    /**
+     * Get a user's most recent blog
+     * @param userId    Id of the user
+     * @return          The blog
+     */
     @Get(BlogOperations.GET_USER_BLOG_MOST_RECENT_ENDPOINT)
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Override
     public Mono<HttpResponse<BlogEntry>> mostRecentBlogByUser(@PathVariable("userId") UUID userId) {
         return blogService.mostRecentBlogByUser(userId)
+                .map(HttpResponse::ok);
+    }
+
+    /**
+     * By some process get the default blog
+     * @return          The default blog, specifically the most recent blog posted
+     */
+    @Get(BlogOperations.GET_DEFAULT_BLOG_ENDPOINT)
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Override
+    public Mono<HttpResponse<BlogEntry>> getDefaultBlog() {
+        return blogService.mostRecentBlogByUser(null)
+                .map(HttpResponse::ok);
+    }
+
+    /**
+     * Default blog stream. Our substitute for "The Algorithm".
+     * @param limit     page size of results. Default 25
+     * @param offset    page offset. Default 0
+     * @return          Stream of blogs
+     */
+    @Get(BlogOperations.DEFAULT_BLOG_STREAM_ENDPOINT)
+    @Secured(SecurityRule.IS_ANONYMOUS)
+    @Override
+    public Mono<HttpResponse<List<BlogEntry>>> getDefaultBlogStream(
+            @QueryValue(value = "limit", defaultValue = "25") int limit,
+            @QueryValue(value = "offset", defaultValue = "0") int offset) {
+        return blogService.getDefaultBlogStream(limit, offset)
+                .collectList()
                 .map(HttpResponse::ok);
     }
 }

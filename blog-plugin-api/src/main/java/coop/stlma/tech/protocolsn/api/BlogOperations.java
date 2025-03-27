@@ -5,6 +5,7 @@ import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import coop.stlma.tech.protocolsn.model.BlogEntryResource;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.PathVariable;
+import io.micronaut.http.annotation.QueryValue;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -34,21 +35,39 @@ public interface BlogOperations {
      */
     Mono<HttpResponse<BlogEntryResource>> submitBlog(BlogEntry blogEntry);
 
+    String GET_USER_BLOGS_ENDPOINT = "/blog/by-user/{userId}/metadata";
     /**
      * Get the metadata of the most recent blogs for this user in reverse chronological order
      *
      * @param userId    Id of the user
      * @return          The metadata
      */
-    String GET_USER_BLOGS_ENDPOINT = "/blog/by-user/{userId}/metadata";
     Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId);
 
+    String GET_USER_BLOG_MOST_RECENT_ENDPOINT = "/blog/by-user/{userId}/most-recent";
     /**
      * Get the most recent blog entry for this user
      *
      * @param userId    Id of the user
      * @return          The blog
      */
-    String GET_USER_BLOG_MOST_RECENT_ENDPOINT = "/blog/by-user/{userId}/most-recent";
     Mono<HttpResponse<BlogEntry>> mostRecentBlogByUser(@PathVariable("userId") UUID userId);
+
+    String GET_DEFAULT_BLOG_ENDPOINT = "/blog/default";
+    /**
+     * Load a default blog based on some criteria
+     * @return          The default blog
+     */
+    Mono<HttpResponse<BlogEntry>> getDefaultBlog();
+
+    String DEFAULT_BLOG_STREAM_ENDPOINT = "/blog/default-stream";
+    /**
+     * Load a default blog stream
+     * @param limit     page size of results. Default 25
+     * @param offset    page offset. Default 0
+     * @return          Stream of blogs
+     */
+    Mono<HttpResponse<List<BlogEntry>>> getDefaultBlogStream(
+            @QueryValue(value = "limit", defaultValue = "25") int limit,
+            @QueryValue(value = "offset", defaultValue = "0") int offset);
 }

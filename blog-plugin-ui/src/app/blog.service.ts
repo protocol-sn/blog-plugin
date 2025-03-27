@@ -20,8 +20,23 @@ export class BlogService {
   private readonly MOST_RECENT_BLOG_ENDPOINT: string = "/blog/by-user/{userId}/most-recent";
   private readonly BLOG_BY_ID_ENDPOINT: string = "/blog/{blogId}";
   private readonly SAVE_BLOG_ENDPOINT: string = "/blog";
+  private readonly DEFAULT_BLOG_ENDPOINT: string = "/blog/default";
+  private readonly DEFAULT_BLOG_STREAM_ENDPOINT: string = "/blog/default-stream";
 
   constructor() { }
+
+  getDefaultStream(): Observable<Blog[]> {
+    return this.apiService.doSecureGET<Blog[]>(environment.SERVICE_HOME + this.DEFAULT_BLOG_STREAM_ENDPOINT)
+      .pipe(
+        map(
+          value => {
+            if (value.ok && value.body) {
+              return value.body;
+            }
+            return <Blog[]>[];
+          }
+      ));
+  }
 
   listBlogs(userId: string): Observable<BlogMetadata[]> {
     return this.apiService.doSecureGET<BlogMetadata[]>(environment.SERVICE_HOME + this.LIST_BLOGS_ENDPOINT.replace("{userId}", userId))
@@ -36,22 +51,35 @@ export class BlogService {
   }
 
   getDefaultBlog():Observable<Blog> {
-    return this.authService.subObs
-      .pipe(
-        mergeMap(sub => {
-          return this.apiService.doSecureGET<Blog>(environment.SERVICE_HOME + this.MOST_RECENT_BLOG_ENDPOINT.replace("{userId}", sub))
-            .pipe(
-              map(
-                value => {
-                  if (value.ok && value.body) {
-                    return value.body;
+    if (this.authService.isAuthenticated()) {
+      return this.authService.subObs
+        .pipe(
+          mergeMap(sub => {
+            return this.apiService.doSecureGET<Blog>(environment.SERVICE_HOME + this.MOST_RECENT_BLOG_ENDPOINT.replace("{userId}", sub))
+              .pipe(
+                map(
+                  value => {
+                    if (value.ok && value.body) {
+                      return value.body;
+                    }
+                    return <Blog>{};
                   }
-                  return <Blog>{};
-                }
+                )
               )
-            )
-        })
-    )
+          })
+        )
+    }
+    return this.apiService.doSecureGET<Blog>(environment.SERVICE_HOME + this.DEFAULT_BLOG_ENDPOINT)
+      .pipe(
+        map(
+          value => {
+            if (value.ok && value.body) {
+              return value.body;
+            }
+            return <Blog>{};
+          }
+        )
+      )
   }
 
   private toMetaData(Blog:Blog):BlogMetadata {
