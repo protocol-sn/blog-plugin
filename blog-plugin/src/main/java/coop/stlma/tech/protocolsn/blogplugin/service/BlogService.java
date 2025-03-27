@@ -40,4 +40,10 @@ public interface BlogService {
      * @return          The most recent blog
      */
     Mono<BlogEntry> mostRecentBlogByUser(UUID userId);
+
+    /**
+     * The substitute for "the algorithm"
+     * @return          A stream of blogs
+     */
+    Flux<BlogEntry> getDefaultBlogStream(int limit, int offset);
 }

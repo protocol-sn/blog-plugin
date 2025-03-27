@@ -5,12 +5,14 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.data.repository.reactive.ReactorCrudRepository;
 import io.micronaut.test.support.TestPropertyProvider;
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
 import java.util.Map;
 
+@Slf4j
 public abstract class RepositoryTest implements TestPropertyProvider {
 
     @Inject

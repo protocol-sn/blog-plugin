@@ -6,6 +6,7 @@ import coop.stlma.tech.protocolsn.blogplugin.util.AuthProviderCreds;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
 import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import io.micronaut.context.annotation.Primary;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.test.annotation.MockBean;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
@@ -33,6 +34,31 @@ class BlogServiceImplTest {
     BlogServiceImpl blogService;
 
     ArgumentCaptor<BlogEntryEntity> blogEntryCaptor = ArgumentCaptor.forClass(BlogEntryEntity.class);
+
+    @Test
+    void testGetDefaultBlogStream_happyPath() {
+        Mockito.when(blogEntryRepositoryMock.findAllOrderByCreatedAtDesc(Mockito.any(Pageable.class)))
+                .thenReturn(Flux.just(TestUtil.makeEntity("my blog"), TestUtil.makeEntity("my blog 2")));
+
+        List<BlogEntry> result = blogService.getDefaultBlogStream(10, 1).collectList().block();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(2, result.size());
+        result = result.stream().sorted(Comparator.comparing(BlogEntry::getBlogTitle)).toList();
+        Assertions.assertEquals("my blog", result.get(0).getBlogTitle());
+        Assertions.assertEquals("my blog 2", result.get(1).getBlogTitle());
+    }
+
+    @Test
+    void testMostRecentBlogByUser_nullUser() {
+        Mockito.when(blogEntryRepositoryMock.findFirstOrderByCreatedAtDesc())
+                .thenReturn(Mono.just(TestUtil.makeEntity("my blog")));
+
+        BlogEntry result = blogService.mostRecentBlogByUser(null).block();
+
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals("my blog", result.getBlogTitle());
+    }
 
     @Test
     void testMostRecentBlogByUser_happyPath() {

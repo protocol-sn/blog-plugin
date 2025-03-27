@@ -46,6 +46,78 @@ class BlogControllerTest {
     ArgumentCaptor<BlogEntry> blogEntryCaptor = ArgumentCaptor.forClass(BlogEntry.class);
 
     @Test
+    void testGetDefaultBlogStream_pagedRequest() {
+        Mockito.when(blogServiceMock.getDefaultBlogStream(10, 1))
+                .thenReturn(Flux.just(BlogEntry.builder()
+                        .id(BLOG_ID)
+                        .author(AuthProviderCreds.TEST_USER_ID)
+                        .blogTitle("Cool Blog")
+                        .blogText("Some text")
+                        .build()));
+
+        HttpRequest<?> request = HttpRequest.GET(BlogOperations.DEFAULT_BLOG_STREAM_ENDPOINT + "?limit=10&offset=1");
+
+        HttpResponse<List<BlogEntry>> response = httpClient.toBlocking()
+                .exchange(request, Argument.listOf(BlogEntry.class));
+
+        Assertions.assertEquals(HttpStatus.OK, response.status());
+        List<BlogEntry> responseBody = response.getBody(Argument.listOf(BlogEntry.class)).get();
+        Assertions.assertEquals(1, responseBody.size());
+        BlogEntry blogEntry = responseBody.get(0);
+        Assertions.assertEquals(BLOG_ID, blogEntry.getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getAuthor());
+        Assertions.assertEquals("Cool Blog", blogEntry.getBlogTitle());
+        Assertions.assertEquals("Some text", blogEntry.getBlogText());
+    }
+
+    @Test
+    void testGetDefaultBlogStream_happyPath() {
+        Mockito.when(blogServiceMock.getDefaultBlogStream(25, 0))
+                .thenReturn(Flux.just(BlogEntry.builder()
+                        .id(BLOG_ID)
+                        .author(AuthProviderCreds.TEST_USER_ID)
+                        .blogTitle("Cool Blog")
+                        .blogText("Some text")
+                        .build()));
+
+        HttpRequest<?> request = HttpRequest.GET(BlogOperations.DEFAULT_BLOG_STREAM_ENDPOINT);
+
+        HttpResponse<List<BlogEntry>> response = httpClient.toBlocking()
+                .exchange(request, Argument.listOf(BlogEntry.class));
+
+        Assertions.assertEquals(HttpStatus.OK, response.status());
+        List<BlogEntry> responseBody = response.getBody(Argument.listOf(BlogEntry.class)).get();
+        Assertions.assertEquals(1, responseBody.size());
+        BlogEntry blogEntry = responseBody.get(0);
+        Assertions.assertEquals(BLOG_ID, blogEntry.getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getAuthor());
+        Assertions.assertEquals("Cool Blog", blogEntry.getBlogTitle());
+        Assertions.assertEquals("Some text", blogEntry.getBlogText());
+    }
+
+    @Test
+    void testDefaultBlog_happyPath() {
+        Mockito.when(blogServiceMock.mostRecentBlogByUser(null))
+                .thenReturn(Mono.just(BlogEntry.builder()
+                        .id(BLOG_ID)
+                        .author(AuthProviderCreds.TEST_USER_ID)
+                        .blogTitle("Cool Blog")
+                        .blogText("Some text")
+                        .build()));
+
+        HttpRequest<BlogEntry> request = HttpRequest.GET(BlogOperations.GET_DEFAULT_BLOG_ENDPOINT);
+        HttpResponse<BlogEntry> response = httpClient.toBlocking()
+                .exchange(request, BlogEntry.class);
+
+        Assertions.assertEquals(HttpStatus.OK, response.status());
+        BlogEntry responseBody = response.getBody(BlogEntry.class).get();
+        Assertions.assertEquals(BLOG_ID, responseBody.getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, responseBody.getAuthor());
+        Assertions.assertEquals("Cool Blog", responseBody.getBlogTitle());
+        Assertions.assertEquals("Some text", responseBody.getBlogText());
+    }
+
+    @Test
     void testMostRecentBlogByUser_happyPath() {
         HttpRequest<BlogEntry> request = HttpRequest.GET(
                 BlogOperations.GET_USER_BLOG_MOST_RECENT_ENDPOINT.replace("{userId}", AuthProviderCreds.TEST_USER_ID.toString()));
