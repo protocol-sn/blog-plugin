@@ -1,18 +1,29 @@
 import { Routes } from '@angular/router';
 import {DisplayBlogComponent} from './display-blog/display-blog.component';
-import {WriteBlogComponent} from './write-blog/write-blog.component';
 import {HomeComponent} from './home-component/home.component';
+import {BlogComponent} from './blog/blog.component';
 
 export const routes: Routes = [
-  { path: 'home', component: HomeComponent },
+  {
+    path: 'home',
+    component: HomeComponent
+  },
+  {
+    path: 'blog/embed',
+    component: BlogComponent,
+  },
   {
     path: 'blog/:blogId',
     component: DisplayBlogComponent,
   },
   {
-    path: 'write-blog',
-    component: WriteBlogComponent
+    path: 'blog/embed/:blogId',
+    component: BlogComponent,
   },
-  { path: '', pathMatch: 'full', redirectTo: 'home' },
-  { path: '**', redirectTo: 'home' },
+  {
+    path: '', pathMatch: 'full', redirectTo: 'home'
+  },
+  {
+    path: '**', redirectTo: 'home'
+  },
 ];

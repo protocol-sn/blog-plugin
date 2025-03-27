@@ -1,5 +1,7 @@
 <div class="grid-container">
-  <app-blog-card [title]="blogToShow.blogTitle ? blogToShow.blogTitle : ''" [postDate]="blogToShow.updatedAt" [tags]="splitTags(blogToShow.tags)">
-    {{blogToShow.blogText}}
-  </app-blog-card>
+  <div *ngFor="let thisBlog of blogsToShow" style="padding-bottom: 15px">
+    <app-blog-card [title]="thisBlog.blogTitle ? thisBlog.blogTitle : ''" [postDate]="thisBlog.updatedAt" [tags]="splitTags(thisBlog.tags)">
+      {{thisBlog.blogText}}
+    </app-blog-card>
+  </div>
 </div>
