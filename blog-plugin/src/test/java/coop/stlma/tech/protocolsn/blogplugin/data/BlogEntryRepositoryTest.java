@@ -48,6 +48,7 @@ class BlogEntryRepositoryTest extends RepositoryTest {
 
         Assertions.assertEquals("my blog 2", result.get(0).getBlogTitle());
         Assertions.assertEquals("my blog", result.get(1).getBlogTitle());
+        Assertions.assertEquals("plaintext", result.get(0).getBlogFormat());
     }
 
     @Test

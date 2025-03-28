@@ -64,6 +64,12 @@ public class BlogEntryEntity {
     private String tags;
 
     /**
+     * Format of the blog. Used by the UI to determine how to format the appearance
+     */
+    @Column(name = "blog_format")
+    private String blogFormat;
+
+    /**
      * When this blog entry was created
      */
     @Column(name = "created_at")

@@ -1,7 +1,12 @@
 <div class="grid-container">
   <div *ngFor="let thisBlog of blogsToShow" style="padding-bottom: 15px">
     <app-blog-card [title]="thisBlog.blogTitle ? thisBlog.blogTitle : ''" [postDate]="thisBlog.updatedAt" [tags]="splitTags(thisBlog.tags)">
-      {{thisBlog.blogText}}
+      <markdown *ngIf="thisBlog.blogFormat === 'markdown'">
+        {{thisBlog.blogText}}
+      </markdown>
+      <span *ngIf="thisBlog.blogFormat === 'plaintext' || !thisBlog.blogFormat">
+        {{thisBlog.blogText}}
+      </span>
     </app-blog-card>
   </div>
 </div>

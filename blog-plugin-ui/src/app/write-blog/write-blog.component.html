@@ -16,6 +16,13 @@
         <input class="form-input" type="text" id="tags" formControlName="tags" />
       </div>
     </div>
+    <div class="input-div">
+      <mat-radio-group formControlName="blogFormat">
+        <mat-radio-button value="plaintext">plaintext</mat-radio-button>
+        <mat-radio-button value="markdown" checked="true">markdown</mat-radio-button>
+      </mat-radio-group>
+
+    </div>
     <div class="blog-text-row" style="height: 80%">
       <div class="label-div">
         <label class="form-label" for="blogText">Blog Text</label>

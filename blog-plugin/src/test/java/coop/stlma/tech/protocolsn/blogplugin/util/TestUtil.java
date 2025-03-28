@@ -16,7 +16,6 @@ import java.util.UUID;
 public class TestUtil {
 
     public static String getTestUserAccessToken(HttpClient httpClient, String userName, String password) {
-
         UsernamePasswordCredentials creds = new UsernamePasswordCredentials(userName, password);
         HttpRequest<?> request = HttpRequest.POST("/login", creds);
 
@@ -39,6 +38,7 @@ public class TestUtil {
                 UUID.nameUUIDFromBytes(("auth"+seed).getBytes()),
                 seed, seed + "TEXT",
                 "One,Two",
+                "plaintext",
                 Instant.ofEpochMilli(1741898462967L),
                 Instant.ofEpochMilli(1741898462967L));
     }

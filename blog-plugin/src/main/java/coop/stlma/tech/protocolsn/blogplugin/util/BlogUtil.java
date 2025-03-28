@@ -28,6 +28,7 @@ public class BlogUtil {
                 .blogTitle(blogEntryEntity.getBlogTitle())
                 .blogText(blogEntryEntity.getBlogText())
                 .tags(blogEntryEntity.getTags())
+                .blogFormat(blogEntryEntity.getBlogFormat())
                 .createdAt(blogEntryEntity.getCreatedAt())
                 .updatedAt(blogEntryEntity.getUpdatedAt())
                 .build();
@@ -45,6 +46,7 @@ public class BlogUtil {
                 blogEntry.getBlogTitle(),
                 blogEntry.getBlogText(),
                 blogEntry.getTags(),
+                blogEntry.getBlogFormat(),
                 blogEntry.getCreatedAt(),
                 blogEntry.getUpdatedAt());
     }

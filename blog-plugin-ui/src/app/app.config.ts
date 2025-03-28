@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
 import {provideOAuthClient} from 'angular-oauth2-oidc';
 import {InitializerService} from './initializer.service';
+import {provideMarkdown} from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       inject(InitializerService).init();
     }),
+    provideMarkdown(),
   ]
 };
