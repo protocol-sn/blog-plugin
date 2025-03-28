@@ -24,6 +24,7 @@ export class WriteBlogComponent {
     id: new FormControl(''),
     blogTitle: new FormControl(''),
     blogText: new FormControl(''),
+    blogFormat: new FormControl(''),
     tags: new FormControl(''),
   });
 
@@ -31,6 +32,7 @@ export class WriteBlogComponent {
     let blog = <Blog> {
       blogTitle: this.blogForm.value.blogTitle,
       blogText: this.blogForm.value.blogText,
+      blogFormat: this.blogForm.value.blogFormat,
       tags: this.blogForm.value.tags,
     }
     console.log(blog);

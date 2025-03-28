@@ -6,7 +6,8 @@ import {Blog} from '../blog';
 import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {BlogService} from '../blog.service';
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgIf} from '@angular/common';
+import {MarkdownComponent} from 'ngx-markdown';
 
 @Component({
   selector: 'app-blog',
@@ -14,7 +15,9 @@ import {NgForOf} from '@angular/common';
     MatGridListModule,
     MatListModule,
     BlogCardComponent,
-    NgForOf
+    NgForOf,
+    MarkdownComponent,
+    NgIf
   ],
   templateUrl: './blog.component.html',
   standalone: true,

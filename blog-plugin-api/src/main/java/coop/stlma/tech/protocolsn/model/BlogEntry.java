@@ -27,4 +27,9 @@ public class BlogEntry extends BlogEntryMetadata {
      * Text of the blog
      */
     private String blogText;
+
+    /**
+     * Format of the blog
+     */
+    private String blogFormat;
 }

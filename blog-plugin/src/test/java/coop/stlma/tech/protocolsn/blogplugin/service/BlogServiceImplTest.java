@@ -47,6 +47,7 @@ class BlogServiceImplTest {
         result = result.stream().sorted(Comparator.comparing(BlogEntry::getBlogTitle)).toList();
         Assertions.assertEquals("my blog", result.get(0).getBlogTitle());
         Assertions.assertEquals("my blog 2", result.get(1).getBlogTitle());
+        Assertions.assertEquals("plaintext", result.get(0).getBlogFormat());
     }
 
     @Test

@@ -78,6 +78,7 @@ class BlogControllerTest {
                         .author(AuthProviderCreds.TEST_USER_ID)
                         .blogTitle("Cool Blog")
                         .blogText("Some text")
+                        .blogFormat("markdown")
                         .build()));
 
         HttpRequest<?> request = HttpRequest.GET(BlogOperations.DEFAULT_BLOG_STREAM_ENDPOINT);
@@ -93,6 +94,7 @@ class BlogControllerTest {
         Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getAuthor());
         Assertions.assertEquals("Cool Blog", blogEntry.getBlogTitle());
         Assertions.assertEquals("Some text", blogEntry.getBlogText());
+        Assertions.assertEquals("markdown", blogEntry.getBlogFormat());
     }
 
     @Test
