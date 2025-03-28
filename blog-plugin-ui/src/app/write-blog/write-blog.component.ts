@@ -1,17 +1,20 @@
 import {Component, inject} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Blog} from '../blog';
 import {BlogService} from '../blog.service';
 import {MatDialog} from '@angular/material/dialog';
+import {MatRadioModule} from '@angular/material/radio';
 
 @Component({
   selector: 'app-write-blog',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatRadioModule,
+    FormsModule,
   ],
   templateUrl: './write-blog.component.html',
   standalone: true,
-  styleUrl: './write-blog.component.css'
+  styleUrl: './write-blog.component.scss'
 })
 export class WriteBlogComponent {
   private readonly blogService = inject(BlogService);
