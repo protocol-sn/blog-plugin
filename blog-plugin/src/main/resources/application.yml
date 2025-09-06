@@ -54,7 +54,8 @@ coop:
     tech:
       protocolsn:
         plugin-name: ProtocolSNBlogPlugin
-        plugin-host: http://localhost:8082
+        plugin-host: localhost
+        plugin-grpc-port: 8092
 
 logger:
   levels:
@@ -82,3 +83,7 @@ datasources:
     username: ${JDBC_USER:postgres}
     password: ${JDBC_PASSWORD:postgres}
     dialect: POSTGRES
+
+grpc:
+  server:
+    port: 8092
