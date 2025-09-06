@@ -17,7 +17,7 @@ micronaut:
   http:
     services:
       node-manager::registration:
-        url: http://localhost:9080
+        url: http://localhost:8080
   security:
     oauth2:
       clients:
@@ -79,7 +79,7 @@ flyway:
 datasources:
   default:
     driver-class-name: org.postgresql.Driver
-    jdbc-url: jdbc:postgresql://db:5432/blogplugin
+    jdbc-url: jdbc:postgresql://localhost:5443/blogplugin
     username: ${JDBC_USER:postgres}
     password: ${JDBC_PASSWORD:postgres}
     dialect: POSTGRES
