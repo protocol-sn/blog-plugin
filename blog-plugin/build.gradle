@@ -1,7 +1,7 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.5.0"
-    id("io.micronaut.aot") version "4.5.0"
+    id("com.gradleup.shadow") version "8.3.7"
+    id("io.micronaut.application") version "4.5.4"
+    id("io.micronaut.aot") version "4.5.4"
 }
 
 version = getProperty("projectVersion")
@@ -24,7 +24,8 @@ dependencies {
     implementation("io.micronaut.validation:micronaut-validation")
 
     //protocol-sn
-    implementation("coop.stlma.tech.protocolsn:plugin-lib:0.4.0")
+    implementation("coop.stlma.tech.protocolsn:plugin-lib:0.5.0")
+    implementation("coop.stlma.tech.protocolsn:common-lib:0.5.0")
     implementation project(':blog-plugin-api')
 
     //serde

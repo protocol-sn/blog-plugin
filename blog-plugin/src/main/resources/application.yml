@@ -17,7 +17,7 @@ micronaut:
   http:
     services:
       node-manager::registration:
-        url: http://localhost:8080
+        url: http://localhost:9080
   security:
     oauth2:
       clients:
@@ -54,7 +54,8 @@ coop:
     tech:
       protocolsn:
         plugin-name: ProtocolSNBlogPlugin
-        plugin-host: http://localhost:8082
+        plugin-host: localhost
+        plugin-grpc-port: 8092
 
 logger:
   levels:
@@ -78,7 +79,11 @@ flyway:
 datasources:
   default:
     driver-class-name: org.postgresql.Driver
-    jdbc-url: jdbc:postgresql://localhost:5443/blogplugin
+    jdbc-url: jdbc:postgresql://db:5432/blogplugin
     username: ${JDBC_USER:postgres}
     password: ${JDBC_PASSWORD:postgres}
     dialect: POSTGRES
+
+grpc:
+  server:
+    port: 8092
