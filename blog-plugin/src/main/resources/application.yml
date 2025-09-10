@@ -14,10 +14,6 @@ micronaut:
       swagger-ui:
         mapping: /swagger-ui/**
         paths: classpath:META-INF/swagger/views/swagger-ui
-  http:
-    services:
-      node-manager::registration:
-        url: http://localhost:8080
   security:
     oauth2:
       clients:
@@ -87,3 +83,7 @@ datasources:
 grpc:
   server:
     port: 8092
+  channels:
+    node-manager:
+      plaintext: true
+      target: localhost:8090
