@@ -1,0 +1,40 @@
+micronaut:
+  server:
+    port: 8080
+
+coop:
+  stlma:
+    tech:
+      protocolsn:
+        plugin-name: ProtocolSNBlogPlugin
+        plugin-host: psn-blog-plugin
+        plugin-grpc-port: 50051
+
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+      locations: db/migrations
+
+datasources:
+  default:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: jdbc:postgresql://db:5432/blogplugin
+    username: ${JDBC_USER:postgres}
+    password: ${JDBC_PASSWORD:postgres}
+    dialect: POSTGRES
+
+grpc:
+  server:
+    port: 50051
+  channels:
+    node-manager:
+      plaintext: true
+      target: psn-node-manager:50051
