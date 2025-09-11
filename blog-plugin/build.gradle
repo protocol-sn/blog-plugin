@@ -114,7 +114,3 @@ micronaut {
 tasks.named("dockerfileNative") {
     jdkVersion = "21"
 }
-
-tasks.named("dockerfile") {
-    environmentVariable 'MICRONAUT_ENV', 'docker'
-}
