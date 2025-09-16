@@ -82,16 +82,6 @@ export class BlogService {
       )
   }
 
-  private toMetaData(Blog:Blog):BlogMetadata {
-    return <BlogMetadata>{
-      id: Blog.id,
-      blogTitle: Blog.blogTitle,
-      tags: Blog.tags,
-      createdAt: Blog.createdAt,
-      updatedAt: Blog.updatedAt,
-    };
-  }
-
   getBlogById(id:string):Observable<Blog> {
     return this.apiService.doSecureGET<Blog>(environment.SERVICE_HOME + this.BLOG_BY_ID_ENDPOINT.replace("{blogId}", id))
       .pipe(

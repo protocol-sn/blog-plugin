@@ -4,6 +4,7 @@ import {Blog} from '../blog';
 import {BlogService} from '../blog.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
+import {BlogMetadata} from '../blog-metadata';
 
 @Component({
   selector: 'app-write-blog',
@@ -30,10 +31,12 @@ export class WriteBlogComponent {
 
   onSubmit() {
     let blog = <Blog> {
-      blogTitle: this.blogForm.value.blogTitle,
+      metadata: <BlogMetadata> {
+        blogTitle: this.blogForm.value.blogTitle,
+        tags: this.blogForm.value.tags,
+      },
       blogText: this.blogForm.value.blogText,
       blogFormat: this.blogForm.value.blogFormat,
-      tags: this.blogForm.value.tags,
     }
     console.log(blog);
     this.validateBlog(blog);

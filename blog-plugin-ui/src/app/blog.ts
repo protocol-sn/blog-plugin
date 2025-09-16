@@ -1,9 +1,7 @@
+import {BlogMetadata} from './blog-metadata';
+
 export interface Blog {
-  id: string | null;
-  blogTitle: string | null;
-  tags: string | null;
+  metadata: BlogMetadata;
   blogText:string | null;
   blogFormat: string | null;
-  createdAt: Date | null;
-  updatedAt: Date | null;
 }

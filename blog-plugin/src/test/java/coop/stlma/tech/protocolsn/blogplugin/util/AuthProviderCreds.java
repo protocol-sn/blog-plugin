@@ -1,6 +1,6 @@
 package coop.stlma.tech.protocolsn.blogplugin.util;
 
-import coop.stlma.tech.protocolsn.pluginlib.security.CommonRoles;
+import coop.stlma.tech.protocolsn.commonlib.security.CommonRoles;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpRequest;

@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    implementation("org.projectlombok:lombok")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("org.projectlombok:lombok:1.18.24")
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
 
     //web
     annotationProcessor("io.micronaut:micronaut-http-validation")
@@ -24,7 +24,7 @@ dependencies {
     implementation("io.micronaut.validation:micronaut-validation")
 
     //protocol-sn
-    implementation("coop.stlma.tech.protocolsn:plugin-lib:0.5.1")
+    implementation("coop.stlma.tech.protocolsn:plugin-lib:0.5.2")
     implementation("coop.stlma.tech.protocolsn:common-lib:0.5.1")
     implementation project(':blog-plugin-api')
 
@@ -34,10 +34,6 @@ dependencies {
 
     //reactor
     implementation("io.micronaut.reactor:micronaut-reactor")
-
-    //web
-    compileOnly("io.micronaut:micronaut-http-client")
-    annotationProcessor("io.micronaut:micronaut-http-validation")
 
     //logging
     runtimeOnly("ch.qos.logback:logback-classic")

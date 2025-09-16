@@ -1,9 +1,9 @@
 package coop.stlma.tech.protocolsn.blogplugin.controller;
 
-import coop.stlma.tech.protocolsn.blogplugin.util.AuthProviderCreds;
-import coop.stlma.tech.protocolsn.blogplugin.util.TestUtil;
 import coop.stlma.tech.protocolsn.api.BlogOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
+import coop.stlma.tech.protocolsn.blogplugin.util.AuthProviderCreds;
+import coop.stlma.tech.protocolsn.blogplugin.util.TestUtil;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
 import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import io.micronaut.context.annotation.Primary;
@@ -49,9 +49,11 @@ class BlogControllerTest {
     void testGetDefaultBlogStream_pagedRequest() {
         Mockito.when(blogServiceMock.getDefaultBlogStream(10, 1))
                 .thenReturn(Flux.just(BlogEntry.builder()
-                        .id(BLOG_ID)
-                        .author(AuthProviderCreds.TEST_USER_ID)
-                        .blogTitle("Cool Blog")
+                        .metadata(BlogEntryMetadata.builder()
+                                .id(BLOG_ID)
+                                .author(AuthProviderCreds.TEST_USER_ID)
+                                .blogTitle("Cool Blog")
+                                .build())
                         .blogText("Some text")
                         .build()));
 
@@ -64,9 +66,9 @@ class BlogControllerTest {
         List<BlogEntry> responseBody = response.getBody(Argument.listOf(BlogEntry.class)).get();
         Assertions.assertEquals(1, responseBody.size());
         BlogEntry blogEntry = responseBody.get(0);
-        Assertions.assertEquals(BLOG_ID, blogEntry.getId());
-        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getAuthor());
-        Assertions.assertEquals("Cool Blog", blogEntry.getBlogTitle());
+        Assertions.assertEquals(BLOG_ID, blogEntry.getMetadata().getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getMetadata().getAuthor());
+        Assertions.assertEquals("Cool Blog", blogEntry.getMetadata().getBlogTitle());
         Assertions.assertEquals("Some text", blogEntry.getBlogText());
     }
 
@@ -74,9 +76,11 @@ class BlogControllerTest {
     void testGetDefaultBlogStream_happyPath() {
         Mockito.when(blogServiceMock.getDefaultBlogStream(25, 0))
                 .thenReturn(Flux.just(BlogEntry.builder()
-                        .id(BLOG_ID)
-                        .author(AuthProviderCreds.TEST_USER_ID)
-                        .blogTitle("Cool Blog")
+                        .metadata(BlogEntryMetadata.builder()
+                                .id(BLOG_ID)
+                                .author(AuthProviderCreds.TEST_USER_ID)
+                                .blogTitle("Cool Blog")
+                                .build())
                         .blogText("Some text")
                         .blogFormat("markdown")
                         .build()));
@@ -90,9 +94,9 @@ class BlogControllerTest {
         List<BlogEntry> responseBody = response.getBody(Argument.listOf(BlogEntry.class)).get();
         Assertions.assertEquals(1, responseBody.size());
         BlogEntry blogEntry = responseBody.get(0);
-        Assertions.assertEquals(BLOG_ID, blogEntry.getId());
-        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getAuthor());
-        Assertions.assertEquals("Cool Blog", blogEntry.getBlogTitle());
+        Assertions.assertEquals(BLOG_ID, blogEntry.getMetadata().getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, blogEntry.getMetadata().getAuthor());
+        Assertions.assertEquals("Cool Blog", blogEntry.getMetadata().getBlogTitle());
         Assertions.assertEquals("Some text", blogEntry.getBlogText());
         Assertions.assertEquals("markdown", blogEntry.getBlogFormat());
     }
@@ -101,9 +105,11 @@ class BlogControllerTest {
     void testDefaultBlog_happyPath() {
         Mockito.when(blogServiceMock.mostRecentBlogByUser(null))
                 .thenReturn(Mono.just(BlogEntry.builder()
-                        .id(BLOG_ID)
-                        .author(AuthProviderCreds.TEST_USER_ID)
-                        .blogTitle("Cool Blog")
+                        .metadata(BlogEntryMetadata.builder()
+                                .id(BLOG_ID)
+                                .author(AuthProviderCreds.TEST_USER_ID)
+                                .blogTitle("Cool Blog")
+                                .build())
                         .blogText("Some text")
                         .build()));
 
@@ -113,9 +119,9 @@ class BlogControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK, response.status());
         BlogEntry responseBody = response.getBody(BlogEntry.class).get();
-        Assertions.assertEquals(BLOG_ID, responseBody.getId());
-        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, responseBody.getAuthor());
-        Assertions.assertEquals("Cool Blog", responseBody.getBlogTitle());
+        Assertions.assertEquals(BLOG_ID, responseBody.getMetadata().getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, responseBody.getMetadata().getAuthor());
+        Assertions.assertEquals("Cool Blog", responseBody.getMetadata().getBlogTitle());
         Assertions.assertEquals("Some text", responseBody.getBlogText());
     }
 
@@ -126,9 +132,11 @@ class BlogControllerTest {
 
         Mockito.when(blogServiceMock.mostRecentBlogByUser(AuthProviderCreds.TEST_USER_ID))
                 .thenReturn(Mono.just(BlogEntry.builder()
-                        .id(BLOG_ID)
-                        .author(AuthProviderCreds.TEST_USER_ID)
-                        .blogTitle("Cool Blog")
+                        .metadata(BlogEntryMetadata.builder()
+                                .id(BLOG_ID)
+                                .author(AuthProviderCreds.TEST_USER_ID)
+                                .blogTitle("Cool Blog")
+                                .build())
                         .blogText("Some text")
                         .build()));
 
@@ -137,9 +145,9 @@ class BlogControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK, response.status());
         BlogEntry responseBody = response.getBody(BlogEntry.class).get();
-        Assertions.assertEquals(BLOG_ID, responseBody.getId());
-        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, responseBody.getAuthor());
-        Assertions.assertEquals("Cool Blog", responseBody.getBlogTitle());
+        Assertions.assertEquals(BLOG_ID, responseBody.getMetadata().getId());
+        Assertions.assertEquals(AuthProviderCreds.TEST_USER_ID, responseBody.getMetadata().getAuthor());
+        Assertions.assertEquals("Cool Blog", responseBody.getMetadata().getBlogTitle());
         Assertions.assertEquals("Some text", responseBody.getBlogText());
     }
 
@@ -184,9 +192,11 @@ class BlogControllerTest {
     void testSaveBlog_happyPath() {
 
         BlogEntry expected = BlogEntry.builder()
-                .id(BLOG_ID)
-                .author(AuthProviderCreds.TEST_USER_ID)
-                .blogTitle("Cool Blog")
+                .metadata(BlogEntryMetadata.builder()
+                        .id(BLOG_ID)
+                        .author(AuthProviderCreds.TEST_USER_ID)
+                        .blogTitle("Cool Blog")
+                        .build())
                 .blogText("Some text")
                 .build();
 
@@ -209,8 +219,10 @@ class BlogControllerTest {
     void testGetBlog_happyPath() {
         Mockito.when(blogServiceMock.getBlog(BLOG_ID))
                 .thenReturn(Mono.just(BlogEntry.builder()
-                        .id(BLOG_ID)
-                        .blogTitle("Cool Blog")
+                        .metadata(BlogEntryMetadata.builder()
+                                .id(BLOG_ID)
+                                .blogTitle("Cool Blog")
+                                .build())
                         .blogText("Some text")
                         .build()));
 
@@ -220,8 +232,8 @@ class BlogControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK, response.status());
         BlogEntry responseBody = response.getBody(BlogEntry.class).get();
-        Assertions.assertEquals(BLOG_ID, responseBody.getId());
-        Assertions.assertEquals("Cool Blog", responseBody.getBlogTitle());
+        Assertions.assertEquals(BLOG_ID, responseBody.getMetadata().getId());
+        Assertions.assertEquals("Cool Blog", responseBody.getMetadata().getBlogTitle());
         Assertions.assertEquals("Some text", responseBody.getBlogText());
     }
 
@@ -229,8 +241,10 @@ class BlogControllerTest {
     void testGetBlog_withAuth() {
         Mockito.when(blogServiceMock.getBlog(BLOG_ID))
                 .thenReturn(Mono.just(BlogEntry.builder()
-                        .id(BLOG_ID)
-                        .blogTitle("Cool Blog")
+                        .metadata(BlogEntryMetadata.builder()
+                                .id(BLOG_ID)
+                                .blogTitle("Cool Blog")
+                                .build())
                         .blogText("Some text")
                         .build()));
 
@@ -241,8 +255,8 @@ class BlogControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK, response.status());
         BlogEntry responseBody = response.getBody(BlogEntry.class).get();
-        Assertions.assertEquals(BLOG_ID, responseBody.getId());
-        Assertions.assertEquals("Cool Blog", responseBody.getBlogTitle());
+        Assertions.assertEquals(BLOG_ID, responseBody.getMetadata().getId());
+        Assertions.assertEquals("Cool Blog", responseBody.getMetadata().getBlogTitle());
         Assertions.assertEquals("Some text", responseBody.getBlogText());
     }
 }
