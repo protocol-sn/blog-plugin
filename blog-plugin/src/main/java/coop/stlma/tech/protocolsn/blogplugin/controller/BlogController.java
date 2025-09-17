@@ -1,5 +1,6 @@
 package coop.stlma.tech.protocolsn.blogplugin.controller;
 
+
 import coop.stlma.tech.protocolsn.api.BlogOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
 import coop.stlma.tech.protocolsn.blogplugin.util.BlogUtil;
@@ -64,11 +65,11 @@ public class BlogController implements BlogOperations {
     @Override
     public Mono<HttpResponse<BlogEntryResource>> submitBlog(@Body BlogEntry blogEntry) {
         UUID userId = BlogUtil.parseUserId(securityService);
-        blogEntry.setAuthor(userId);
+        blogEntry.getMetadata().setAuthor(userId);
         return blogService.saveBlog(blogEntry)
                 .map(blogEntry1 -> {
                     BlogEntryResource resource = new BlogEntryResource();
-                    resource = resource.link("self", Link.of(BlogOperations.GET_BLOG_ENDPOINT.replace("{blogId}", blogEntry1.getId().toString())));
+                    resource = resource.link("self", Link.of(BlogOperations.GET_BLOG_ENDPOINT.replace("{blogId}", blogEntry1.getMetadata().getId().toString())));
                     return resource;
                 })
                 .map(HttpResponse::created);

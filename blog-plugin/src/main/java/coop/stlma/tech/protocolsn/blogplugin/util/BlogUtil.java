@@ -23,14 +23,16 @@ public class BlogUtil {
      */
     public static BlogEntry mapToModel(BlogEntryEntity blogEntryEntity) {
         return BlogEntry.builder()
-                .id(blogEntryEntity.getId())
-                .author(blogEntryEntity.getAuthor())
-                .blogTitle(blogEntryEntity.getBlogTitle())
+                .metadata(BlogEntryMetadata.builder()
+                    .id(blogEntryEntity.getId())
+                    .author(blogEntryEntity.getAuthor())
+                    .blogTitle(blogEntryEntity.getBlogTitle())
+                    .tags(blogEntryEntity.getTags())
+                    .createdAt(blogEntryEntity.getCreatedAt())
+                    .updatedAt(blogEntryEntity.getUpdatedAt())
+                    .build())
                 .blogText(blogEntryEntity.getBlogText())
-                .tags(blogEntryEntity.getTags())
                 .blogFormat(blogEntryEntity.getBlogFormat())
-                .createdAt(blogEntryEntity.getCreatedAt())
-                .updatedAt(blogEntryEntity.getUpdatedAt())
                 .build();
     }
 
@@ -41,14 +43,14 @@ public class BlogUtil {
      */
     public static BlogEntryEntity mapToEntity(BlogEntry blogEntry) {
         return new BlogEntryEntity(
-                blogEntry.getId(),
-                blogEntry.getAuthor(),
-                blogEntry.getBlogTitle(),
+                blogEntry.getMetadata().getId(),
+                blogEntry.getMetadata().getAuthor(),
+                blogEntry.getMetadata().getBlogTitle(),
                 blogEntry.getBlogText(),
-                blogEntry.getTags(),
+                blogEntry.getMetadata().getTags(),
                 blogEntry.getBlogFormat(),
-                blogEntry.getCreatedAt(),
-                blogEntry.getUpdatedAt());
+                blogEntry.getMetadata().getCreatedAt(),
+                blogEntry.getMetadata().getUpdatedAt());
     }
 
     /**

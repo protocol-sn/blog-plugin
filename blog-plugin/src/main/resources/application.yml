@@ -55,9 +55,7 @@ coop:
 
 logger:
   levels:
-    coop.stlma.tech.protocolsn: DEBUG
-    io.micronaut.security: DEBUG
-    io.micronaut.http: DEBUG
+    io.micronaut.http: TRACE
 
 jpa:
   default:

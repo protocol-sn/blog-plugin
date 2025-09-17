@@ -3,6 +3,7 @@ package coop.stlma.tech.protocolsn.model;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +19,12 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @EqualsAndHashCode(callSuper = false)
 @Serdeable
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogEntry extends BlogEntryMetadata {
+@Builder
+public class BlogEntry {
+
+    private BlogEntryMetadata metadata;
 
     /**
      * Text of the blog

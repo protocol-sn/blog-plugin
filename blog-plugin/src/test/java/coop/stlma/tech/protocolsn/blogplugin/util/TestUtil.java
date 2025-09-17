@@ -2,6 +2,7 @@ package coop.stlma.tech.protocolsn.blogplugin.util;
 
 import coop.stlma.tech.protocolsn.blogplugin.data.entity.BlogEntryEntity;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
+import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
@@ -45,21 +46,23 @@ public class TestUtil {
 
     public static BlogEntry makeModel(String seed) {
         return BlogEntry.builder()
-                .id(UUID.nameUUIDFromBytes(("auth"+seed).getBytes()))
-                .blogTitle(seed)
+                .metadata(BlogEntryMetadata.builder()
+                        .id(UUID.nameUUIDFromBytes(("auth"+seed).getBytes()))
+                        .blogTitle(seed)
+                        .tags("One,Two")
+                        .createdAt(Instant.ofEpochMilli(1741898462967L))
+                        .updatedAt(Instant.ofEpochMilli(1741898462967L))
+                        .build())
                 .blogText(seed + "TEXT")
-                .tags("One,Two")
-                .createdAt(Instant.ofEpochMilli(1741898462967L))
-                .updatedAt(Instant.ofEpochMilli(1741898462967L))
                 .build();
     }
 
     public static boolean modelEntityCompare(BlogEntry model, BlogEntryEntity entity) {
-        return model.getId().equals(entity.getId()) &&
-                model.getBlogTitle().equals(entity.getBlogTitle()) &&
+        return model.getMetadata().getId().equals(entity.getId()) &&
+                model.getMetadata().getBlogTitle().equals(entity.getBlogTitle()) &&
                 model.getBlogText().equals(entity.getBlogText()) &&
-                model.getTags().equals(entity.getTags()) &&
-                model.getCreatedAt().equals(entity.getCreatedAt()) &&
-                model.getUpdatedAt().equals(entity.getUpdatedAt());
+                model.getMetadata().getTags().equals(entity.getTags()) &&
+                model.getMetadata().getCreatedAt().equals(entity.getCreatedAt()) &&
+                model.getMetadata().getUpdatedAt().equals(entity.getUpdatedAt());
     }
 }

@@ -44,9 +44,9 @@ class BlogServiceImplTest {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(2, result.size());
-        result = result.stream().sorted(Comparator.comparing(BlogEntry::getBlogTitle)).toList();
-        Assertions.assertEquals("my blog", result.get(0).getBlogTitle());
-        Assertions.assertEquals("my blog 2", result.get(1).getBlogTitle());
+        result = result.stream().sorted(Comparator.comparing(blogEntry -> blogEntry.getMetadata().getBlogTitle())).toList();
+        Assertions.assertEquals("my blog", result.get(0).getMetadata().getBlogTitle());
+        Assertions.assertEquals("my blog 2", result.get(1).getMetadata().getBlogTitle());
         Assertions.assertEquals("plaintext", result.get(0).getBlogFormat());
     }
 
@@ -58,7 +58,7 @@ class BlogServiceImplTest {
         BlogEntry result = blogService.mostRecentBlogByUser(null).block();
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("my blog", result.getBlogTitle());
+        Assertions.assertEquals("my blog", result.getMetadata().getBlogTitle());
     }
 
     @Test
@@ -69,7 +69,7 @@ class BlogServiceImplTest {
         BlogEntry result = blogService.mostRecentBlogByUser(AuthProviderCreds.TEST_USER_ID).block();
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("my blog", result.getBlogTitle());
+        Assertions.assertEquals("my blog", result.getMetadata().getBlogTitle());
     }
 
     @Test
@@ -118,11 +118,11 @@ class BlogServiceImplTest {
         BlogEntry result = blogService.getBlog(BLOG_ID).block();
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(expected.getId(), result.getId());
-        Assertions.assertEquals(expected.getBlogTitle(), result.getBlogTitle());
+        Assertions.assertEquals(expected.getId(), result.getMetadata().getId());
+        Assertions.assertEquals(expected.getBlogTitle(), result.getMetadata().getBlogTitle());
         Assertions.assertEquals(expected.getBlogText(), result.getBlogText());
-        Assertions.assertEquals(expected.getTags(), result.getTags());
-        Assertions.assertEquals(expected.getCreatedAt(), result.getCreatedAt());
-        Assertions.assertEquals(expected.getUpdatedAt(), result.getUpdatedAt());
+        Assertions.assertEquals(expected.getTags(), result.getMetadata().getTags());
+        Assertions.assertEquals(expected.getCreatedAt(), result.getMetadata().getCreatedAt());
+        Assertions.assertEquals(expected.getUpdatedAt(), result.getMetadata().getUpdatedAt());
     }
 }

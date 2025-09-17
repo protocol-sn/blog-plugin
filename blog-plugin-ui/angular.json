@@ -58,6 +58,17 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ]
+            },
+            "docker": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -73,6 +84,9 @@
             },
             "development": {
               "buildTarget": "blog-plugin-ui:build:development"
+            },
+            "docker": {
+              "buildTarget": "blog-plugin-ui:build:docker"
             }
           },
           "defaultConfiguration": "development"
