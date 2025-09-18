@@ -1,0 +1,51 @@
+micronaut:
+  server:
+    port: 8080
+  http:
+    services:
+      keycloak-admin:
+        url: http://${KEYCLOAK_HOST}/
+  security:
+    token:
+      jwt:
+        signatures:
+          jwks:
+            keycloak:
+              url: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem/protocol/openid-connect/certs
+    oauth2:
+      clients:
+        local-keycloak:
+          client-secret: ${BLOG_PLUGIN_CLIENT_SECRET}
+          openid:
+            issuer: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem
+        keycloak-client:
+          client-secret: ${BLOG_PLUGIN_CLIENT_SECRET}
+          token:
+            url: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem/protocol/openid-connect/token
+          client-credentials:
+            service-id-regex: keycloak-admin
+          openid:
+            issuer: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem
+
+coop:
+  stlma:
+    tech:
+      protocolsn:
+        plugin-name: ProtocolSNBlogPlugin
+        plugin-target: dns:///${BLOG_PLUGIN_HOST}:${BLOG_PLUGIN_GRPC_PORT}
+
+grpc:
+  server:
+    port: ${BLOG_PLUGIN_GRPC_PORT}
+  channels:
+    node-manager:
+      address: ${NODE_MANAGER_HOST}
+      plaintext: true
+
+datasources:
+  default:
+    driver-class-name: org.postgresql.Driver
+    jdbc-url: ${JDBC_URL:jdbc:postgresql://ecosystem-psql.flycast:5432/blogplugin?sslmode=disable}
+    username: ${JDBC_USER}
+    password: ${JDBC_PASSWORD}
+    dialect: POSTGRES

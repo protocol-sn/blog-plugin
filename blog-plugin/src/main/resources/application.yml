@@ -53,10 +53,6 @@ coop:
         plugin-host: localhost
         plugin-grpc-port: 8092
 
-logger:
-  levels:
-    io.micronaut.http: TRACE
-
 jpa:
   default:
     properties:

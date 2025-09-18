@@ -1,0 +1,11 @@
+FROM eclipse-temurin:21-jre
+WORKDIR /home/app
+
+ENV BLOG_PLUGIN_HOST=blog-plugin.flycast
+ENV BLOG_PLUGIN_GRPC_PORT=50051
+ENV NODE_MANAGER_HOST=http://node-manager.flycast:50051
+ENV JDBC_URL=jdbc:postgresql://ecosystem-psql.flycast:5432/nodemanager?sslmode=disable
+
+COPY --link build/libs/blog-plugin*-all.jar /home/app/application.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-Dmicronaut.environments=fly", "-jar", "/home/app/application.jar"]

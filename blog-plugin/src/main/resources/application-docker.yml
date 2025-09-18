@@ -19,8 +19,7 @@ coop:
     tech:
       protocolsn:
         plugin-name: ProtocolSNBlogPlugin
-        plugin-host: psn-blog-plugin
-        plugin-grpc-port: 50051
+        plugin-target: dns:///psn-blog-plugin:50051
 
 jpa:
   default:
