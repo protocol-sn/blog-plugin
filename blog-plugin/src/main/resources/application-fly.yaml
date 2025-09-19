@@ -1,6 +1,9 @@
 micronaut:
   server:
     port: 8080
+    context-path: /blog
+    cors:
+      enabled: true
   http:
     services:
       keycloak-admin:
