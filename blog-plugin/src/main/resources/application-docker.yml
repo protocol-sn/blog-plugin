@@ -6,34 +6,21 @@ micronaut:
     oauth2:
       clients:
         keycloak:
+          client-id: blog-plugin
+          client-secret: blog-plugin-secret
           openid:
-            issuer: http://keycloak:8080/realms/social-network-ecosystem
-        keycloak-client:
-          token:
-            url: http://keycloak:8080/realms/social-network-ecosystem/protocol/openid-connect/token
-          openid:
-            issuer: http://keycloak:8080/realms/social-network-ecosystem
+            issuer: http://keycloak.psn.local:5005/auth/realms/social-network-ecosystem
+    endpoints:
+      logout:
+        get-allowed: true
+    authentication: idtoken
 
 coop:
   stlma:
     tech:
       protocolsn:
         plugin-name: ProtocolSNBlogPlugin
-        plugin-host: psn-blog-plugin
-        plugin-grpc-port: 50051
-
-jpa:
-  default:
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: none
-
-flyway:
-  datasources:
-    default:
-      enabled: true
-      locations: db/migrations
+        plugin-target: dns:///psn-blog-plugin:50051
 
 datasources:
   default:

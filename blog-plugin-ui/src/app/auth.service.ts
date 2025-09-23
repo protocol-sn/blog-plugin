@@ -19,6 +19,7 @@ export class AuthService {
   public subBehavior:BehaviorSubject<string> = new BehaviorSubject("");
 
   authCodeFlowConfig: AuthConfig = {
+    requireHttps: environment.PRODUCTION,
     // Url of the Identity Provider
     issuer: environment.OAUTH_ISSUER,
 
@@ -42,7 +43,7 @@ export class AuthService {
     // Important: Request offline_access to get a refresh token
     // The api scope is a usecase specific one
     // scope: 'openid profile email offline_access api',
-    scope: 'openid profile email offline_access roles',
+    scope: 'openid profile email offline_access roles plugin-aud',
 
     showDebugInformation: true,
   };
