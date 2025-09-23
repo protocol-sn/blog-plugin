@@ -6,8 +6,6 @@ micronaut:
     oauth2:
       clients:
         keycloak:
-          client-id: blog-plugin
-          client-secret: blog-plugin-secret
           openid:
             issuer: http://keycloak.psn.local:5005/auth/realms/social-network-ecosystem
     endpoints:
