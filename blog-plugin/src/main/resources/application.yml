@@ -29,15 +29,6 @@ micronaut:
 
           openid:
             issuer: http://localhost:9080/auth/realms/social-network-ecosystem
-#        keycloak-client:
-#          client-id: blog-plugin
-#          client-secret: blog-plugin-secret
-#          grant-type: client_credentials
-#          token:
-#            url: http://localhost:9080/auth/realms/social-network-ecosystem/protocol/openid-connect/token
-#            auth-method: client_secret_post
-#          openid:
-#            issuer: http://localhost:9080/auth/realms/social-network-ecosystem
     endpoints:
       logout:
         get-allowed: true

@@ -7,17 +7,11 @@ micronaut:
       clients:
         keycloak:
           openid:
-            issuer: http://localhost:5005/realms/social-network-ecosystem
-        keycloak-client:
-          client-id: blog-plugin
-          client-secret: blog-plugin-secret
-          grant-type: client_credentials
-          token:
-            url: http://localhost:9080/realms/social-network-ecosystem/protocol/openid-connect/token
-            auth-method: client_secret_post
-          openid:
-            issuer: http://localhost:9080/realms/social-network-ecosystem
-    authentication: bearer
+            issuer: http://keycloak.psn.local:5005/auth/realms/social-network-ecosystem
+    endpoints:
+      logout:
+        get-allowed: true
+    authentication: idtoken
 
 coop:
   stlma:
@@ -25,19 +19,6 @@ coop:
       protocolsn:
         plugin-name: ProtocolSNBlogPlugin
         plugin-target: dns:///psn-blog-plugin:50051
-
-jpa:
-  default:
-    properties:
-      hibernate:
-        hbm2ddl:
-          auto: none
-
-flyway:
-  datasources:
-    default:
-      enabled: true
-      locations: db/migrations
 
 datasources:
   default:

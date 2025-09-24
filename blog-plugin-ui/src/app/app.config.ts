@@ -1,11 +1,11 @@
 import {ApplicationConfig, inject, provideAppInitializer, provideZoneChangeDetection} from '@angular/core';
-import { provideRouter } from '@angular/router';
 
-import { routes } from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
 import {provideOAuthClient} from 'angular-oauth2-oidc';
 import {InitializerService} from './initializer.service';
 import {provideMarkdown} from 'ngx-markdown';
+import {routes} from './app.routes';
+import {provideRouter} from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
   providers: [
