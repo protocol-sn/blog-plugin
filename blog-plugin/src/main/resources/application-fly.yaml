@@ -4,31 +4,12 @@ micronaut:
     context-path: /blog
     cors:
       enabled: true
-  http:
-    services:
-      keycloak-admin:
-        url: http://${KEYCLOAK_HOST}/
   security:
-    token:
-      jwt:
-        signatures:
-          jwks:
-            keycloak:
-              url: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem/protocol/openid-connect/certs
-#    oauth2:
-#      clients:
-#        local-keycloak:
-#          client-secret: ${BLOG_PLUGIN_CLIENT_SECRET}
-#          openid:
-#            issuer: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem
-#        keycloak-client:
-#          client-secret: ${BLOG_PLUGIN_CLIENT_SECRET}
-#          token:
-#            url: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem/protocol/openid-connect/token
-#          client-credentials:
-#            service-id-regex: keycloak-admin
-#          openid:
-#            issuer: http://${KEYCLOAK_HOST}/realms/social-network-ecosystem
+    oauth2:
+      clients:
+        keycloak:
+          openid:
+            issuer: https://${KEYCLOAK_HOST}/realms/social-network-ecosystem
 
 coop:
   stlma:
