@@ -13,16 +13,7 @@ export class UserService {
   authService: AuthService = inject(AuthService);
   public readonly GET_USER_ENDPOINT = "/users/{userId}";
   public user: PsnUser | undefined;
-  private loggedInUser: PsnUser | undefined;
-
-  // userResource = rxResource<PsnUser, string>({
-  //   loader: () => {
-  //     if (this.authService.userInfo.value()?.sub) {
-  //       return this.getUser(this.authService.userInfo.value()?.sub)
-  //     }
-  //     return new Observable(subscriber => subscriber.next(<PsnUser>{}));
-  //   },
-  // })
+  private readonly loggedInUser: PsnUser | undefined;
 
   getUser(id = this.authService.sub): Observable<PsnUser> {
     if (!id) {

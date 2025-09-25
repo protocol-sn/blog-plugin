@@ -5,7 +5,7 @@ import {MatListModule} from '@angular/material/list';
 import {environment} from '../../environments/environment';
 import {BehaviorSubject, map, mergeMap, Observable, shareReplay} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {BlogService} from '../blog.service';
 import {BlogMetadata} from '../blog-metadata';
@@ -24,8 +24,6 @@ import {rxResource} from '@angular/core/rxjs-interop';
     MatListModule,
     AsyncPipe,
     MatIconModule,
-    NgIf,
-    NgForOf,
     MatButtonModule,
   ],
   templateUrl: './navigation.component.html',
@@ -43,6 +41,7 @@ export class NavigationComponent implements OnInit {
 
   blogListRequest = signal("");
   protected blogListResource = rxResource<BlogMetadata[], string>({
+
     request: this.blogListRequest,
     loader: () => {
       console.log(this.authService.subBehavior);
@@ -75,7 +74,6 @@ export class NavigationComponent implements OnInit {
     console.log("initializing");
     this.authService.subBehavior.subscribe(value => this.blogListRequest.set(value));
     this.blogService.blogUpdate.subscribe(value => this.blogListRequest.set(value.toString()));
-    // this.authService.subBehavior.subscribe(value => this.blogListRequest.set(value));
     this.blogListResource.reload();
   }
 }

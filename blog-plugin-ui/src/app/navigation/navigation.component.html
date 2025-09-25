@@ -6,32 +6,41 @@
     <mat-toolbar>
     </mat-toolbar>
     <mat-nav-list>
-      <a *ngIf="authService.isAuthenticated()" mat-list-item (click)="showBlogForm()">Write new blog</a>
+      @if (authService.isAuthenticated()) {
+        <a mat-list-item (click)="showBlogForm()">Write new blog</a>
+      }
     </mat-nav-list>
     <hr/>
     Blogs
     <mat-nav-list>
-      <a mat-list-item *ngFor="let blogMeta of blogListResource.value()" [href]="'/blog/'+blogMeta.id">{{blogMeta.blogTitle}}</a>
+      @for (blogMeta of blogListResource.value(); track blogMeta.id) {
+        <a mat-list-item [href]="'/blog/'+blogMeta.id">{{blogMeta.blogTitle}}</a>
+      }
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="tertiary" class="accent-bar">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
+      @if (isHandset$ | async) {
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+      }
       <div class="top-bar">
         <span>Blogging</span>
-        <button *ngIf="!authService.isAuthenticated()" mat-button (click)="authService.login()">
-          Login
-        </button>
-        <button *ngIf="authService.isAuthenticated()" mat-button (click)="authService.logout()">
-          Logout
-        </button>
+        @if (!authService.isAuthenticated()) {
+          <button mat-button (click)="authService.login()">
+            Login
+          </button>
+        }
+        @if (authService.isAuthenticated()) {
+          <button mat-button (click)="authService.logout()">
+            Logout
+          </button>
+        }
       </div>
     </mat-toolbar>
     <div style="height: 100%;"><ng-content></ng-content></div>
