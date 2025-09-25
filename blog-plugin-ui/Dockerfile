@@ -1,0 +1,11 @@
+FROM node:24 AS build
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm ci
+RUN npm install -g @angular/cli
+COPY . .
+
+RUN ng build --configuration=docker
+FROM nginx:alpine
+COPY --from=build /usr/src/app/dist/blog-plugin-ui/browser /usr/share/nginx/html
+EXPOSE 80
