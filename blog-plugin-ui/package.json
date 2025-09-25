@@ -21,8 +21,8 @@
     "@angular/platform-browser-dynamic": "^20.3.2",
     "@angular/router": "^20.3.2",
     "angular-local-storage": "^0.7.1",
-    "angular-oauth2-oidc": "^19.0.0",
-    "ngx-markdown": "^19.1.1",
+    "angular-oauth2-oidc": "^20.0.2",
+    "ngx-markdown": "^20.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
