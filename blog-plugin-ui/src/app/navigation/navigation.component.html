@@ -13,7 +13,7 @@
     <hr/>
     Blogs
     <mat-nav-list>
-      @for (blogMeta of blogListResource.value(); track blogMeta.id) {
+      @for (blogMeta of blogListResource.value().results; track blogMeta.id) {
         <a mat-list-item [href]="'/blog/'+blogMeta.id">{{blogMeta.blogTitle}}</a>
       }
     </mat-nav-list>

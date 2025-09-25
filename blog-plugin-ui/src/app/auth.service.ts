@@ -2,7 +2,6 @@ import {inject, Injectable} from '@angular/core';
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
 import {Router} from "@angular/router";
 import {environment} from '../environments/environment';
-import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {UserService} from './user.service';
 
@@ -11,7 +10,6 @@ import {UserService} from './user.service';
 })
 export class AuthService {
   private readonly oidcSecurityService = inject(OAuthService);
-  private readonly httpClient = inject(HttpClient);
   public roles: string[] = [];
   public sub: string = "";
   public userName: string = "";
