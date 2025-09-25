@@ -2,7 +2,6 @@ import {inject, Injectable} from '@angular/core';
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
 import {Router} from "@angular/router";
 import {environment} from '../environments/environment';
-import {HttpClient} from '@angular/common/http';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {UserService} from './user.service';
 
@@ -11,7 +10,6 @@ import {UserService} from './user.service';
 })
 export class AuthService {
   private readonly oidcSecurityService = inject(OAuthService);
-  private readonly httpClient = inject(HttpClient);
   public roles: string[] = [];
   public sub: string = "";
   public userName: string = "";
@@ -138,27 +136,10 @@ export class AuthService {
     console.log("loaded profile");
     this.roles = value['info'].realm_access.roles;
     this.sub = value['info'].sub;
-    // this.subObs = new Observable<string>(subscriber => subscriber.next(this.sub));
     console.log("sub: " + this.sub);
     sessionStorage.setItem('loggedInUser', this.sub);
     this.subBehavior.next(this.sub);
     this.userName = value['info'].preferred_username;
     return this.sub;
-    // return from(this.oidcSecurityService.loadUserProfile()).pipe(
-    //   map(
-    //     (value: Record<string, any>) => {
-    //       console.log(value['info']);
-    //       this.roles = value['info'].realm_access.roles;
-    //       this.sub = value['info'].sub;
-    //       this.userName = value['info'].preferred_username;
-    //       return this.sub;
-    //     }
-    //   )
-    // );
-    //   value: Record<string, any>) => {
-    //   this.roles = value['info'].realm_access.roles;
-    //   this.sub = value['info'].sub;
-    //   this.userName = value['info'].preferred_username;
-    // }));
   }
 }

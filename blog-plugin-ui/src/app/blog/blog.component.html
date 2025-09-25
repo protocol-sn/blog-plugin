@@ -1,12 +1,17 @@
 <div class="grid-container">
-  <div *ngFor="let thisBlog of blogsToShow" style="padding-bottom: 15px">
-    <app-blog-card [title]="thisBlog.metadata.blogTitle ? thisBlog.metadata.blogTitle : ''" [postDate]="thisBlog.metadata.updatedAt" [tags]="splitTags(thisBlog.metadata.tags)">
-      <markdown *ngIf="thisBlog.blogFormat === 'markdown'">
-        {{thisBlog.blogText}}
-      </markdown>
-      <span *ngIf="thisBlog.blogFormat === 'plaintext' || !thisBlog.blogFormat">
-        {{thisBlog.blogText}}
-      </span>
-    </app-blog-card>
-  </div>
+  @for (thisBlog of blogsToShow; track thisBlog.metadata.id) {
+    <div style="padding-bottom: 15px">
+      <app-blog-card [title]="thisBlog.metadata.blogTitle ? thisBlog.metadata.blogTitle : ''" [postDate]="thisBlog.metadata.updatedAt" [tags]="splitTags(thisBlog.metadata.tags)">
+        @if (thisBlog.blogFormat === 'markdown') {
+          <markdown>
+            {{thisBlog.blogText}}
+          </markdown>
+        } @else if (thisBlog.blogFormat === 'plaintext' || !thisBlog.blogFormat) {
+          <span>
+            {{thisBlog.blogText}}
+          </span>
+        }
+      </app-blog-card>
+    </div>
+  }
 </div>

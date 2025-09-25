@@ -2,19 +2,17 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
-import {environment} from '../../environments/environment';
-import {BehaviorSubject, map, mergeMap, Observable, shareReplay} from 'rxjs';
+import {map, mergeMap, Observable, shareReplay} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 import {BlogService} from '../blog.service';
-import {BlogMetadata} from '../blog-metadata';
 import {WriteBlogComponent} from '../write-blog/write-blog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {AuthService} from '../auth.service';
 import {MatButtonModule} from '@angular/material/button';
-import {UserService} from '../user.service';
 import {rxResource} from '@angular/core/rxjs-interop';
+import {BlogMetadataResourceType} from '../blog-metadata-resource-type';
 
 @Component({
   selector: 'app-navigation',
@@ -24,8 +22,6 @@ import {rxResource} from '@angular/core/rxjs-interop';
     MatListModule,
     AsyncPipe,
     MatIconModule,
-    NgIf,
-    NgForOf,
     MatButtonModule,
   ],
   templateUrl: './navigation.component.html',
@@ -37,23 +33,35 @@ export class NavigationComponent implements OnInit {
   private readonly blogService = inject(BlogService);
   readonly dialog = inject(MatDialog);
   protected readonly authService:AuthService = inject(AuthService);
-  private readonly userService: UserService = inject(UserService);
-
-  userBehavior: BehaviorSubject<string> = new BehaviorSubject<string>("");
 
   blogListRequest = signal("");
-  protected blogListResource = rxResource<BlogMetadata[], string>({
-    request: this.blogListRequest,
-    loader: () => {
+  protected blogListResource = rxResource<BlogMetadataResourceType, string>({
+    params: () => this.blogService.lastUpdated(),
+    stream: () => {
       console.log(this.authService.subBehavior);
       return this.authService.subBehavior
         .pipe(
           mergeMap(sub => {
             console.log(sub);
-            return this.blogService.listBlogs(sub);
+            return this.blogService.listBlogs(sub)
+              .pipe(
+                map (
+                  value => {
+                    console.log(value);
+                    return {
+                      count: value.length,
+                      results: value
+                    };
+                  })
+              );
           })
         )
+
     },
+    defaultValue: {
+      count: 0,
+      results: []
+    }
   })
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -61,7 +69,6 @@ export class NavigationComponent implements OnInit {
       map(result => result.matches),
       shareReplay()
     );
-  protected readonly environment = environment;
 
   showBlogForm() {
     this.dialog.open(WriteBlogComponent, {
@@ -75,7 +82,6 @@ export class NavigationComponent implements OnInit {
     console.log("initializing");
     this.authService.subBehavior.subscribe(value => this.blogListRequest.set(value));
     this.blogService.blogUpdate.subscribe(value => this.blogListRequest.set(value.toString()));
-    // this.authService.subBehavior.subscribe(value => this.blogListRequest.set(value));
     this.blogListResource.reload();
   }
 }
