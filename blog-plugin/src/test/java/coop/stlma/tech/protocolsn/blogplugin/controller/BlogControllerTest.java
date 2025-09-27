@@ -178,7 +178,6 @@ class BlogControllerTest {
     }
 
     @Test
-    @Disabled("Some updates broke the auth in tests. Fix later")
     void testSaveBlog_noAuthFails() {
         HttpRequest<BlogEntry> request = HttpRequest.POST(BlogOperations.SUBMIT_BLOG_ENDPOINT, BlogEntry.builder().build());
 
@@ -191,7 +190,6 @@ class BlogControllerTest {
     }
 
     @Test
-    @Disabled("Some updates broke the auth in tests. Fix later")
     void testSaveBlog_happyPath() {
 
         BlogEntry expected = BlogEntry.builder()
