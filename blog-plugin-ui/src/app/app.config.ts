@@ -5,12 +5,12 @@ import {provideOAuthClient} from 'angular-oauth2-oidc';
 import {InitializerService} from './initializer.service';
 import {provideMarkdown} from 'ngx-markdown';
 import {routes} from './app.routes';
-import {provideRouter, withHashLocation} from '@angular/router';
+import {provideRouter} from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes),
     provideOAuthClient(),
     provideHttpClient(),
     provideAppInitializer(() => {
