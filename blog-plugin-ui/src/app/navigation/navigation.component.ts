@@ -2,7 +2,7 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
-import {map, mergeMap, Observable, shareReplay} from 'rxjs';
+import {catchError, map, mergeMap, Observable, of, shareReplay} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {AsyncPipe} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
@@ -54,6 +54,12 @@ export class NavigationComponent implements OnInit {
                     };
                   })
               );
+          }),
+          catchError(err => {
+            return of({
+              count: 0,
+              results: []
+            })
           })
         )
 
@@ -62,7 +68,7 @@ export class NavigationComponent implements OnInit {
       count: 0,
       results: []
     }
-  })
+  });
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(

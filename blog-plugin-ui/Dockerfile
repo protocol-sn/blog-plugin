@@ -8,4 +8,5 @@ COPY . .
 RUN ng build --configuration=docker
 FROM nginx:alpine
 COPY --from=build /usr/src/app/dist/blog-plugin-ui/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
