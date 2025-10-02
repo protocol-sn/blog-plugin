@@ -1,7 +1,6 @@
 package coop.stlma.tech.protocolsn.api;
 
 import coop.stlma.tech.protocolsn.model.BlogEntry;
-import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import coop.stlma.tech.protocolsn.model.BlogEntryResource;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.PathVariable;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Operations for registration of plugins
+ * Operations for handling blog entries
  *
  * @author John Meyerin
  */
@@ -36,13 +35,6 @@ public interface BlogOperations {
     Mono<HttpResponse<BlogEntryResource>> submitBlog(BlogEntry blogEntry);
 
     String GET_USER_BLOGS_ENDPOINT = "/blog/by-user/{userId}/metadata";
-    /**
-     * Get the metadata of the most recent blogs for this user in reverse chronological order
-     *
-     * @param userId    Id of the user
-     * @return          The metadata
-     */
-    Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId);
 
     String GET_USER_BLOG_MOST_RECENT_ENDPOINT = "/blog/by-user/{userId}/most-recent";
     /**

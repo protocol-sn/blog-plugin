@@ -76,20 +76,6 @@ public class BlogController implements BlogOperations {
     }
 
     /**
-     * Get the metadata for this user's most recent blogs
-     * @param userId    Id of the user
-     * @return          The metadata
-     */
-    @Get(BlogOperations.GET_USER_BLOGS_ENDPOINT)
-    @Secured(SecurityRule.IS_ANONYMOUS)
-    @Override
-    public Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId) {
-        return blogService.queryBlogMetadata(userId)
-                .collectList()
-                .map(HttpResponse::ok);
-    }
-
-    /**
      * Get a user's most recent blog
      * @param userId    Id of the user
      * @return          The blog
