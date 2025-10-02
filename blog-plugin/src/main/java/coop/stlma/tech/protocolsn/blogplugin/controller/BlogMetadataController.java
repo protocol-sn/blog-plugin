@@ -14,7 +14,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * Controller for blog metadata operations
+ *
+ * @author John Meyerin
+ */
 @Controller
 public class BlogMetadataController implements BlogMetadataOperations {
 
