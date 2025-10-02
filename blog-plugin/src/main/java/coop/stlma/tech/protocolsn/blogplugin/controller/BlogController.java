@@ -5,7 +5,6 @@ import coop.stlma.tech.protocolsn.api.BlogOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
 import coop.stlma.tech.protocolsn.blogplugin.util.BlogUtil;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
-import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import coop.stlma.tech.protocolsn.model.BlogEntryResource;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;

@@ -14,7 +14,9 @@ import java.util.UUID;
  *
  * @author John Meyerin
  */
-public interface BlogMetadataOperation {
+public interface BlogMetadataOperations {
+
+    String GET_USER_BLOG_METADATA = "/blog/metadata/by-user/{userId}";
     /**
      * Get the metadata of the most recent blogs for this user in reverse chronological order
      *
@@ -23,6 +25,7 @@ public interface BlogMetadataOperation {
      */
     Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId);
 
+    String GET_DEFAULT_STREAM_METADATA = "/blog/metadata/default-stream";
     /**
      * Load a default blog stream metadata
      * @param limit     page size of results. Default 25

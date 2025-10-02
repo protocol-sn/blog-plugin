@@ -34,8 +34,6 @@ public interface BlogOperations {
      */
     Mono<HttpResponse<BlogEntryResource>> submitBlog(BlogEntry blogEntry);
 
-    String GET_USER_BLOGS_ENDPOINT = "/blog/by-user/{userId}/metadata";
-
     String GET_USER_BLOG_MOST_RECENT_ENDPOINT = "/blog/by-user/{userId}/most-recent";
     /**
      * Get the most recent blog entry for this user

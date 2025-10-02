@@ -21,6 +21,7 @@ export class BlogService {
   private readonly SAVE_BLOG_ENDPOINT: string = "/blog";
   private readonly DEFAULT_BLOG_ENDPOINT: string = "/blog/default";
   private readonly DEFAULT_BLOG_STREAM_ENDPOINT: string = "/blog/default-stream";
+  private readonly DEFAULT_METADATA_STREAM_ENDPOINT: string = "/blog/metadata/default-stream";
 
   constructor() { }
 
@@ -35,6 +36,20 @@ export class BlogService {
             return <Blog[]>[];
           }
       ));
+  }
+
+  getDefaultStreamMetadata(): Observable<BlogMetadata[]> {
+    return this.apiService.doSecureGET<BlogMetadata[]>(environment.SERVICE_HOME + this.DEFAULT_METADATA_STREAM_ENDPOINT)
+      .pipe(
+        map(
+          value => {
+            if (value.ok && value.body) {
+              return value.body;
+            }
+            return <BlogMetadata[]>[];
+          }
+        )
+      );
   }
 
   listBlogs(userId: string): Observable<BlogMetadata[]> {
@@ -100,8 +115,9 @@ export class BlogService {
   saveBlog(blog: Blog) {
     console.log("about to save");
     // this.blogUpdate.next(new Date())
-    this.lastUpdated.set(new Date().toString())
     this.apiService.doSecurePOST<Blog>(environment.SERVICE_HOME + this.SAVE_BLOG_ENDPOINT, "application/json", blog)
-      .subscribe();
+      .subscribe(value => {
+        this.lastUpdated.set(new Date().toString());
+      });
   }
 }

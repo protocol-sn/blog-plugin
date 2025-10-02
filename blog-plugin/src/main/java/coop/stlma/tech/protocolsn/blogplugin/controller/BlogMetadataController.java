@@ -1,9 +1,7 @@
 package coop.stlma.tech.protocolsn.blogplugin.controller;
 
-import coop.stlma.tech.protocolsn.api.BlogMetadataOperation;
-import coop.stlma.tech.protocolsn.api.BlogOperations;
+import coop.stlma.tech.protocolsn.api.BlogMetadataOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
-import coop.stlma.tech.protocolsn.model.BlogEntry;
 import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Controller;
@@ -18,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-public class BlogMetadataController implements BlogMetadataOperation {
+public class BlogMetadataController implements BlogMetadataOperations {
 
     private final BlogService blogService;
 
@@ -31,7 +29,7 @@ public class BlogMetadataController implements BlogMetadataOperation {
      * @param userId    Id of the user
      * @return          The metadata
      */
-    @Get(BlogOperations.GET_USER_BLOGS_ENDPOINT)
+    @Get(BlogMetadataOperations.GET_USER_BLOG_METADATA)
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Override
     public Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId) {
@@ -46,6 +44,8 @@ public class BlogMetadataController implements BlogMetadataOperation {
      * @param offset    page offset. Default 0
      * @return          Metadata
      */
+    @Get(BlogMetadataOperations.GET_DEFAULT_STREAM_METADATA)
+    @Secured(SecurityRule.IS_ANONYMOUS)
     @Override
     public Mono<HttpResponse<List<BlogEntryMetadata>>> getDefaultBlogMetadataStream(
             @QueryValue(value = "limit", defaultValue = "25") int limit,

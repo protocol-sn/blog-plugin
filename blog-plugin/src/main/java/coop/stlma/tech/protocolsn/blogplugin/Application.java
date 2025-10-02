@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.security.SecuritySchemes;
  */
 @OpenAPIDefinition(info = @Info(
         title = "Protocol SN Blog Plugin",
-        version = "0.3.0"
+        version = "0.7.0"
 ))
 @SecuritySchemes(
         @SecurityScheme(
