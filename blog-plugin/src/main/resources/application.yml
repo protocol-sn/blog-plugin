@@ -76,10 +76,3 @@ grpc:
     node-manager:
       plaintext: true
       target: localhost:50051
-
-
-
-logger:
-  levels:
-    #io.micronaut.http: TRACE
-    io.micronaut.security: TRACE

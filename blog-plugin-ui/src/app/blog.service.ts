@@ -1,9 +1,8 @@
-import {inject, Injectable} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
 import {BehaviorSubject, map, mergeMap, Observable} from 'rxjs';
 import {BlogMetadata} from './blog-metadata';
 import {Blog} from './blog';
 import {ApiService} from './api.service';
-import {UserService} from './user.service';
 import {environment} from '../environments/environment';
 import {AuthService} from './auth.service';
 
@@ -12,9 +11,9 @@ import {AuthService} from './auth.service';
 })
 export class BlogService {
   private readonly apiService: ApiService = inject(ApiService);
-  private readonly userService: UserService = inject(UserService);
   private readonly authService: AuthService = inject(AuthService);
   public blogUpdate:BehaviorSubject<Date> = new BehaviorSubject<Date>(new Date());
+  public lastUpdated = signal('');
 
   private readonly LIST_BLOGS_ENDPOINT: string = "/blog/by-user/{userId}/metadata";
   private readonly MOST_RECENT_BLOG_ENDPOINT: string = "/blog/by-user/{userId}/most-recent";
@@ -22,6 +21,7 @@ export class BlogService {
   private readonly SAVE_BLOG_ENDPOINT: string = "/blog";
   private readonly DEFAULT_BLOG_ENDPOINT: string = "/blog/default";
   private readonly DEFAULT_BLOG_STREAM_ENDPOINT: string = "/blog/default-stream";
+  private readonly DEFAULT_METADATA_STREAM_ENDPOINT: string = "/blog/metadata/default-stream";
 
   constructor() { }
 
@@ -38,11 +38,27 @@ export class BlogService {
       ));
   }
 
+  getDefaultStreamMetadata(): Observable<BlogMetadata[]> {
+    return this.apiService.doSecureGET<BlogMetadata[]>(environment.SERVICE_HOME + this.DEFAULT_METADATA_STREAM_ENDPOINT)
+      .pipe(
+        map(
+          value => {
+            if (value.ok && value.body) {
+              return value.body;
+            }
+            return <BlogMetadata[]>[];
+          }
+        )
+      );
+  }
+
   listBlogs(userId: string): Observable<BlogMetadata[]> {
+    console.log("getting metadata");
     return this.apiService.doSecureGET<BlogMetadata[]>(environment.SERVICE_HOME + this.LIST_BLOGS_ENDPOINT.replace("{userId}", userId))
       .pipe(
         map(
           value => {
+            console.log(value);
             if (value.ok && value.body) {
               return value.body;
             }
@@ -98,8 +114,10 @@ export class BlogService {
 
   saveBlog(blog: Blog) {
     console.log("about to save");
-    this.blogUpdate.next(new Date())
+    // this.blogUpdate.next(new Date())
     this.apiService.doSecurePOST<Blog>(environment.SERVICE_HOME + this.SAVE_BLOG_ENDPOINT, "application/json", blog)
-      .subscribe();
+      .subscribe(value => {
+        this.lastUpdated.set(new Date().toString());
+      });
   }
 }

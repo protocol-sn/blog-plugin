@@ -1,12 +1,11 @@
 import {Component, Input} from '@angular/core';
 import {MatCardModule} from '@angular/material/card';
-import {DatePipe, NgForOf} from '@angular/common';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-blog-card',
   imports: [
     MatCardModule,
-    NgForOf,
     DatePipe
   ],
   templateUrl: './blog-card.component.html',

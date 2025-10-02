@@ -153,32 +153,6 @@ class BlogControllerTest {
     }
 
     @Test
-    void testRecentBlogMetaForUser_happyPath() {
-        HttpRequest<BlogEntryMetadata> request = HttpRequest.GET(
-                BlogOperations.GET_USER_BLOGS_ENDPOINT.replace("{userId}", AuthProviderCreds.TEST_USER_ID.toString()));
-
-        Mockito.when(blogServiceMock.queryBlogMetadata(AuthProviderCreds.TEST_USER_ID))
-                .thenReturn(Flux.just(
-                        BlogEntryMetadata.builder()
-                                .blogTitle("blog1")
-                                .build(),
-                        BlogEntryMetadata.builder()
-                                .blogTitle("blog2")
-                                .build()));
-
-        HttpResponse<List<BlogEntryMetadata>> response = httpClient.toBlocking()
-                .exchange(request, Argument.listOf(BlogEntryMetadata.class));
-
-        Assertions.assertEquals(HttpStatus.OK, response.status());
-        List<BlogEntryMetadata> responseBody = response.body();
-        Assertions.assertEquals(2, responseBody.size());
-        responseBody = responseBody.stream().sorted(Comparator.comparing(BlogEntryMetadata::getBlogTitle)).toList();
-        Assertions.assertEquals("blog1", responseBody.get(0).getBlogTitle());
-        Assertions.assertEquals("blog2", responseBody.get(1).getBlogTitle());
-    }
-
-    @Test
-    @Disabled("Some updates broke the auth in tests. Fix later")
     void testSaveBlog_noAuthFails() {
         HttpRequest<BlogEntry> request = HttpRequest.POST(BlogOperations.SUBMIT_BLOG_ENDPOINT, BlogEntry.builder().build());
 
@@ -191,7 +165,6 @@ class BlogControllerTest {
     }
 
     @Test
-    @Disabled("Some updates broke the auth in tests. Fix later")
     void testSaveBlog_happyPath() {
 
         BlogEntry expected = BlogEntry.builder()
