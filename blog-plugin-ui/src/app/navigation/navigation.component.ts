@@ -2,7 +2,7 @@ import {Component, inject, OnInit, signal} from '@angular/core';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatListModule} from '@angular/material/list';
-import {catchError, map, mergeMap, Observable, of, shareReplay} from 'rxjs';
+import {catchError, map, Observable, of, shareReplay} from 'rxjs';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {AsyncPipe} from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
@@ -38,22 +38,13 @@ export class NavigationComponent implements OnInit {
   protected blogListResource = rxResource<BlogMetadataResourceType, string>({
     params: () => this.blogService.lastUpdated(),
     stream: () => {
-      console.log(this.authService.subBehavior);
-      return this.authService.subBehavior
+      return this.blogService.getDefaultStreamMetadata()
         .pipe(
-          mergeMap(sub => {
-            console.log(sub);
-            return this.blogService.listBlogs(sub)
-              .pipe(
-                map (
-                  value => {
-                    console.log(value);
-                    return {
-                      count: value.length,
-                      results: value
-                    };
-                  })
-              );
+          map(value => {
+            return {
+              count: value.length,
+              results: value
+            }
           }),
           catchError(err => {
             return of({
@@ -62,7 +53,6 @@ export class NavigationComponent implements OnInit {
             })
           })
         )
-
     },
     defaultValue: {
       count: 0,

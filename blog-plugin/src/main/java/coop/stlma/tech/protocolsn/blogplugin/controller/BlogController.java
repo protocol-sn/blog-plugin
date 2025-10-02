@@ -5,7 +5,6 @@ import coop.stlma.tech.protocolsn.api.BlogOperations;
 import coop.stlma.tech.protocolsn.blogplugin.service.BlogService;
 import coop.stlma.tech.protocolsn.blogplugin.util.BlogUtil;
 import coop.stlma.tech.protocolsn.model.BlogEntry;
-import coop.stlma.tech.protocolsn.model.BlogEntryMetadata;
 import coop.stlma.tech.protocolsn.model.BlogEntryResource;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
@@ -73,20 +72,6 @@ public class BlogController implements BlogOperations {
                     return resource;
                 })
                 .map(HttpResponse::created);
-    }
-
-    /**
-     * Get the metadata for this user's most recent blogs
-     * @param userId    Id of the user
-     * @return          The metadata
-     */
-    @Get(BlogOperations.GET_USER_BLOGS_ENDPOINT)
-    @Secured(SecurityRule.IS_ANONYMOUS)
-    @Override
-    public Mono<HttpResponse<List<BlogEntryMetadata>>> recentBlogMetaForUser(@PathVariable("userId") UUID userId) {
-        return blogService.queryBlogMetadata(userId)
-                .collectList()
-                .map(HttpResponse::ok);
     }
 
     /**

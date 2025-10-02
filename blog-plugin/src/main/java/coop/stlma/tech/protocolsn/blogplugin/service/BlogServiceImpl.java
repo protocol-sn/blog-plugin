@@ -84,4 +84,16 @@ public class BlogServiceImpl implements BlogService {
         return blogEntryRepository.findAllOrderByCreatedAtDesc(Pageable.from(offset, limit))
                 .map(BlogUtil::mapToModel);
     }
+
+    /**
+     * Get a default blog stream. Our substitute for "The Algorithm".
+     * @param limit     page size of results. Default 25
+     * @param offset    page offset. Default 0
+     * @return          Stream of blogs
+     */
+    @Override
+    public Flux<BlogEntryMetadata> getDefaultBlogStreamMetadata(int limit, int offset) {
+        return blogEntryRepository.findAllOrderByCreatedAtDesc(Pageable.from(offset, limit))
+                .map(BlogUtil::mapToMetaModel);
+    }
 }

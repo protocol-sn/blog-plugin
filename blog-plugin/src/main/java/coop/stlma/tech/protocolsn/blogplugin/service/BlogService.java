@@ -46,4 +46,10 @@ public interface BlogService {
      * @return          A stream of blogs
      */
     Flux<BlogEntry> getDefaultBlogStream(int limit, int offset);
+
+    /**
+     * Metadata substitute for "the algorithm"
+     * @return          A stream of blog metadata
+     */
+    Flux<BlogEntryMetadata> getDefaultBlogStreamMetadata(int limit, int offset);
 }
