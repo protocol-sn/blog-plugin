@@ -18,7 +18,7 @@
       }
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content style="width: 100%">
     <mat-toolbar color="tertiary" class="accent-bar">
       @if (isHandset$ | async) {
         <button
@@ -43,6 +43,6 @@
         }
       </div>
     </mat-toolbar>
-    <div style="height: 100%;"><ng-content></ng-content></div>
+    <div><ng-content></ng-content></div>
   </mat-sidenav-content>
 </mat-sidenav-container>
